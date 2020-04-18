@@ -5,7 +5,7 @@
   "repository": "https://github.com/steviedisco/steamroom.git",
   "author": "Steve Driscoll <steved@intuitivesystems.co.uk>",
   "license": "MIT",
-  "dependencies": {
+  "resolutions": {
     "js-yaml": "3.13.1",
     "mem": "4.0.0",
     "preact-cli": "^2.2.1",
