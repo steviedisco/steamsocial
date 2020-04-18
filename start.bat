@@ -1,1 +1,1 @@
-yarn --cwd ./app/ serve
+yarn --cwd ./steamroom-preact/ serve
