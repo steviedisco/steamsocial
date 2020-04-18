@@ -6,6 +6,10 @@
   "author": "Steve Driscoll <steved@intuitivesystems.co.uk>",
   "license": "MIT",
   "dependencies": {
-    "preact-cli": "^2.2.1"
+    "js-yaml": "3.13.1",
+    "mem": "4.0.0",
+    "preact-cli": "^2.2.1",
+    "serialize-javascript": "2.1.1",
+    "webpack-dev-server": "3.1.11"
   }
 }
