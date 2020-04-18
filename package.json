@@ -1,0 +1,11 @@
+{
+  "name": "steamroom",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/steviedisco/steamroom.git",
+  "author": "Steve Driscoll <steved@intuitivesystems.co.uk>",
+  "license": "MIT",
+  "dependencies": {
+    "preact-cli": "^2.2.1"
+  }
+}
