@@ -1,6 +1,6 @@
 {
-  "name": "app",
-  "short_name": "app",
+  "name": "steamroom-preact",
+  "short_name": "steamroom-preact",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",

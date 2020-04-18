@@ -1,1 +1,0 @@
-yarn --cwd ./app/ serve
