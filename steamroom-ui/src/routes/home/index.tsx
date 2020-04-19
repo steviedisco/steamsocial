@@ -4,8 +4,11 @@ import * as style from "./style.css";
 const Home: FunctionalComponent = () => {
     return (
         <div class={style.home}>
-            <h1>Home</h1>
-            <p>This is the Home component.</p>
+            <p>
+                Steam Room lets you compare your Steam library with your friends
+                to help organise multiplayer sessions using games you already
+                own.
+            </p>
         </div>
     );
 };
