@@ -1,30 +1,17 @@
 import { h, Component } from "preact";
+import { useState, useEffect } from 'preact/hooks';
 
-export interface AppProps {
-  name: string;
-}
+export function App(props) {
+  const [name, setName] = useState(props.name);
 
-interface AppState {
-  name: string;
-}
-
-export class App extends Component<AppProps, AppState> {
-  constructor(props: AppProps) {
-    super(props);
-
-    this.state = { name: props.name };
-  }
-  componentDidMount() {
+  useEffect(() => {
     setTimeout(() => {
-      var state = this.state;
-      state = { name: "Preact's componentDidMount worked as expected" };
-      this.setState(state);
+      setName("useEffect worked as expected");
     }, 2000);
-  }
-  render(props: AppProps, state: AppState) {
-    return (<div>
-      <h1>Props: {props.name}</h1>
-      <h1>State: {state.name}</h1>
-    </div>);
-  }
+  }, []);
+
+  return (<div>
+    <h1>Props: {props.name}</h1>
+    <h1>State: {name}</h1>
+  </div>);
 }
