@@ -16,13 +16,15 @@
     "build/*"
   ],
   "devDependencies": {
-    "eslint": "^6.0.1",
+    "tslint": "^6.1.1",
+    "eslint": "^6.8.0",
     "eslint-config-synacor": "^3.0.4",
     "preact-cli": "^3.0.0-rc.6",
     "sirv-cli": "^0.4.5"
   },
   "dependencies": {
     "preact": "^10.1.0",
-    "preact-render-to-string": "^5.1.2"
+    "preact-render-to-string": "^5.1.2",
+    "typescript": "^3.8.3"
   }
 }
