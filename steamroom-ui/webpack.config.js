@@ -21,6 +21,7 @@ module.exports = {
   entry: "./src/bootstrap.tsx",
   output: {
     filename: "./public/bundle.js",
+    publicPath: "/",
   },
   // Enable sourcemaps for debugging webpack's output.
   devtool: "eval",
@@ -45,5 +46,6 @@ module.exports = {
     port: 3000,
     // Public path is root of content base
     publicPath: "/",
+    historyApiFallback: true,
   },
 };
