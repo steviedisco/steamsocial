@@ -22,6 +22,9 @@ export class App extends Component<AppProps, AppState> {
     }, 2000);
   }
   render(props: AppProps, state: AppState) {
-    return <h1>props: {props.name} state: {state.name}</h1>;
+    return (<div>
+      <h1>Props: {props.name}</h1>
+      <h1>State: {state.name}</h1>
+    </div>);
   }
 }
