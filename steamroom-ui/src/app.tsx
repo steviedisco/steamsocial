@@ -17,7 +17,7 @@ export class App extends Component<AppProps, AppState> {
   componentDidMount() {
     setTimeout(() => {
       var state = this.state;
-      this.state = { name: "Preact's componentDidMount worked as expected" };
+      state = { name: "Preact's componentDidMount worked as expected" };
       this.setState(state);
     }, 2000);
   }

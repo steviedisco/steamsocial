@@ -1,0 +1,6 @@
+SteamRoom TODO
+
+* check state is working
+* check componentdidmount is working
+check stateless functions are working
+* get debugging via sourcemap working
