@@ -1,6 +1,6 @@
 const path = require("path");
 const fs = require("fs");
-// const HtmlWebpackPlugin = await import("html-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 // App directory
 const appDirectory = fs.realpathSync(process.cwd());
@@ -21,7 +21,6 @@ module.exports = {
   entry: "./src/bootstrap.tsx",
   output: {
     filename: "./public/bundle.js",
-    publicPath: "/",
   },
   // Enable sourcemaps for debugging webpack's output.
   devtool: "eval",
@@ -46,6 +45,14 @@ module.exports = {
     port: 3000,
     // Public path is root of content base
     publicPath: "/",
-    historyApiFallback: true,
   },
+  plugins: [
+    // Re-generate index.html with injected script tag.
+    // The injected script tag contains a src value of the
+    // filename output defined above.
+    new HtmlWebpackPlugin({
+      inject: true,
+      template: resolveAppPath("public/index.html"),
+    }),
+  ],
 };
