@@ -31,16 +31,32 @@ module.exports = {
   module: {
     rules: [
       // Handle .ts and .tsx file via ts-loader.
-      { test: /\.tsx?$/, loader: "ts-loader" },
+      {
+        test: /\.tsx?$/,
+        loader: "ts-loader",
+      },
     ],
   },
   devServer: {
+    // clientLogLevel: "silent",
+    inline: false,
     // Serve index.html as the base
     contentBase: resolveAppPath("public"),
     // Enable compression
-    compress: true,
-    // Enable hot reloading
     hot: true,
+    quiet: false,
+    noInfo: false,
+    stats: {
+      // Config for minimal console.log mess.
+      assets: false,
+      colors: true,
+      version: false,
+      hash: false,
+      timings: false,
+      chunks: false,
+      chunkModules: false,
+    },
+    historyApiFallback: true,
     host,
     port: 3000,
     // Public path is root of content base

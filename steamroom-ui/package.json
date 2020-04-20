@@ -5,8 +5,7 @@
   "license": "MIT",
   "scripts": {
     "lint": "tsc --noEmit && eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
-    "devpack": "webpack",
-    "start": "webpack-dev-server"
+    "start": "webpack-dev-server --display errors-only"
   },
   "eslintConfig": {
     "extends": "eslint-config-synacor"
