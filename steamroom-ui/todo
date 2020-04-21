@@ -5,5 +5,5 @@ SteamRoom TODO
 * check functional components are working
 * get debugging via sourcemap working
 
-host output on github pages
+* host output on github pages - store prod in /docs
 
