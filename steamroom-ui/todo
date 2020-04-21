@@ -4,3 +4,6 @@ SteamRoom TODO
 * check componentdidmount is working
 * check functional components are working
 * get debugging via sourcemap working
+
+host output on github pages
+

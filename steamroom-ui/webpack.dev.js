@@ -1,6 +1,7 @@
 const path = require("path");
 const fs = require("fs");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const merge = require("webpack-merge");
+const common = require("./webpack.common.js");
 
 // App directory
 const appDirectory = fs.realpathSync(process.cwd());
@@ -15,28 +16,11 @@ const host = process.env.HOST || "localhost";
 // Required for babel-preset-react-app
 process.env.NODE_ENV = "development";
 
-module.exports = {
+module.exports = merge(common, {
   // Environment mode
   mode: "development",
-  entry: "./src/bootstrap.tsx",
-  output: {
-    filename: "./public/bundle.js",
-  },
   // Enable sourcemaps for debugging webpack's output.
   devtool: "source-map",
-  resolve: {
-    // Add '.ts' and '.tsx' as resolvable extensions.
-    extensions: [".webpack.js", ".web.js", ".ts", ".tsx", ".js"],
-  },
-  module: {
-    rules: [
-      // Handle .ts and .tsx file via ts-loader.
-      {
-        test: /\.tsx?$/,
-        loader: "ts-loader",
-      },
-    ],
-  },
   devServer: {
     // clientLogLevel: "silent",
     inline: false,
@@ -62,13 +46,4 @@ module.exports = {
     // Public path is root of content base
     publicPath: "/",
   },
-  plugins: [
-    // Re-generate index.html with injected script tag.
-    // The injected script tag contains a src value of the
-    // filename output defined above.
-    new HtmlWebpackPlugin({
-      inject: true,
-      template: resolveAppPath("public/index.html"),
-    }),
-  ],
-};
+});
