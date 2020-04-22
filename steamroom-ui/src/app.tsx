@@ -1,14 +1,11 @@
-import { h, Component } from "preact";
+import { h } from "preact";
 import { Button } from "preact-fluid";
 
-export function App(props) {
-
+export function App(): any {
   return (
     <div>
-      Yo!
-      <Button>
-          Hello World
-      </Button>
+      <h1>Test</h1>
+      <Button>Yo</Button>
     </div>
   );
 }

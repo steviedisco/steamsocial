@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
     "outDir": "./public",
-    "target": "es5",
-    "module": "commonjs",
+    "target": "ES2020",
+    "module": "CommonJS",
     "noImplicitAny": false,
     "removeComments": true,
     "sourceMap": true,
     "jsx": "react",
-    "jsxFactory": "h"
+    "jsxFactory": "h",
+    "esModuleInterop": true
   },
   "include": [
     "./src/**/*.tsx",

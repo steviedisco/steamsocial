@@ -16,10 +16,11 @@ module.exports = merge(common, {
   mode: "development",
   devtool: "source-map",
   devServer: {
+    clientLogLevel: "trace",
     inline: true,
     contentBase: resolveAppPath("public"),
     hot: true,
-    quiet: true,
+    quiet: false,
     noInfo: false,
     historyApiFallback: true,
     host,
@@ -32,6 +33,13 @@ module.exports = merge(common, {
       hash: false,
       chunks: false,
       chunkModules: false,
+      verbose: true,
+    },
+    headers: {
+      "Cache-Control": "max-age=0",
+      get etag() {
+        return Math.random() + "";
+      },
     },
   },
 });
