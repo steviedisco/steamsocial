@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "preact": "^10.1.0",
+    "preact-fluid": "^0.9.1",
     "preact-render-to-string": "^5.1.2",
     "ts-loader": "^7.0.1",
     "typescript": "^3.8.3"
