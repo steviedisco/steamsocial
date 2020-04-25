@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "b3a3c7d2cbcf313c98e589314528bdc0",
-    "url": "/index.html"
+    "revision": "8a4cad15d2eb757de51c2377d8ee1c41",
+    "url": "/steamroom/index.html"
   },
   {
-    "revision": "20be567c3ca7a3aeb33e",
+    "revision": "7ef05d96c4ff280fd01c",
     "url": "/steamroom/static/css/main.5f361e03.chunk.css"
   },
   {
@@ -16,12 +16,12 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/steamroom/static/js/2.6caf6b33.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "20be567c3ca7a3aeb33e",
-    "url": "/steamroom/static/js/main.5d8d1874.chunk.js"
+    "revision": "7ef05d96c4ff280fd01c",
+    "url": "/steamroom/static/js/main.a0ab8abb.chunk.js"
   },
   {
-    "revision": "47963ff73b593fc5c897",
-    "url": "/steamroom/static/js/runtime-main.aa07f3f0.js"
+    "revision": "1ea679514222cefec09f",
+    "url": "/steamroom/static/js/runtime-main.c73a01e0.js"
   },
   {
     "revision": "5d5d9eefa31e5e13a6610d9fa7a283bb",

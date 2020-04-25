@@ -1,23 +1,23 @@
 {
   "files": {
     "main.css": "/steamroom/static/css/main.5f361e03.chunk.css",
-    "main.js": "/steamroom/static/js/main.5d8d1874.chunk.js",
-    "main.js.map": "/steamroom/static/js/main.5d8d1874.chunk.js.map",
-    "runtime-main.js": "/steamroom/static/js/runtime-main.aa07f3f0.js",
-    "runtime-main.js.map": "/steamroom/static/js/runtime-main.aa07f3f0.js.map",
-    "steamroom/static/js/2.6caf6b33.chunk.js": "/steamroom/static/js/2.6caf6b33.chunk.js",
-    "steamroom/static/js/2.6caf6b33.chunk.js.map": "/steamroom/static/js/2.6caf6b33.chunk.js.map",
-    "index.html": "/index.html",
-    "precache-manifest.64a7a26355be7a81a73a2c0389d358c5.js": "/precache-manifest.64a7a26355be7a81a73a2c0389d358c5.js",
-    "service-worker.js": "/service-worker.js",
-    "steamroom/static/css/main.5f361e03.chunk.css.map": "/steamroom/static/css/main.5f361e03.chunk.css.map",
-    "steamroom/static/js/2.6caf6b33.chunk.js.LICENSE.txt": "/steamroom/static/js/2.6caf6b33.chunk.js.LICENSE.txt",
-    "steamroom/static/media/logo.svg": "/steamroom/static/media/logo.5d5d9eef.svg"
+    "main.js": "/steamroom/static/js/main.a0ab8abb.chunk.js",
+    "main.js.map": "/steamroom/static/js/main.a0ab8abb.chunk.js.map",
+    "runtime-main.js": "/steamroom/static/js/runtime-main.c73a01e0.js",
+    "runtime-main.js.map": "/steamroom/static/js/runtime-main.c73a01e0.js.map",
+    "static/js/2.6caf6b33.chunk.js": "/steamroom/static/js/2.6caf6b33.chunk.js",
+    "static/js/2.6caf6b33.chunk.js.map": "/steamroom/static/js/2.6caf6b33.chunk.js.map",
+    "index.html": "/steamroom/index.html",
+    "precache-manifest.b95f94b651d1f8f4b5746e4aac306aab.js": "/steamroom/precache-manifest.b95f94b651d1f8f4b5746e4aac306aab.js",
+    "service-worker.js": "/steamroom/service-worker.js",
+    "static/css/main.5f361e03.chunk.css.map": "/steamroom/static/css/main.5f361e03.chunk.css.map",
+    "static/js/2.6caf6b33.chunk.js.LICENSE.txt": "/steamroom/static/js/2.6caf6b33.chunk.js.LICENSE.txt",
+    "static/media/logo.svg": "/steamroom/static/media/logo.5d5d9eef.svg"
   },
   "entrypoints": [
-    "steamroom/static/js/runtime-main.aa07f3f0.js",
-    "steamroom/static/js/2.6caf6b33.chunk.js",
-    "steamroom/static/css/main.5f361e03.chunk.css",
-    "steamroom/static/js/main.5d8d1874.chunk.js"
+    "static/js/runtime-main.c73a01e0.js",
+    "static/js/2.6caf6b33.chunk.js",
+    "static/css/main.5f361e03.chunk.css",
+    "static/js/main.a0ab8abb.chunk.js"
   ]
 }
