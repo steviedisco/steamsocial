@@ -1,7 +1,7 @@
 import React from 'react';
 import './../styles/app.css';
 
-import Test from './test';
+import GameList from './gameList';
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
           </pre>
         </div>
       </div>
-      <Test />
+      <GameList />
     </>
   );
 }
