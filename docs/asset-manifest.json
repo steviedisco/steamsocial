@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/steamroom/static/css/main.3397eef7.chunk.css",
-    "main.js": "/steamroom/static/js/main.6143bd2d.chunk.js",
-    "main.js.map": "/steamroom/static/js/main.6143bd2d.chunk.js.map",
+    "main.js": "/steamroom/static/js/main.c892b2ab.chunk.js",
+    "main.js.map": "/steamroom/static/js/main.c892b2ab.chunk.js.map",
     "runtime-main.js": "/steamroom/static/js/runtime-main.c73a01e0.js",
     "runtime-main.js.map": "/steamroom/static/js/runtime-main.c73a01e0.js.map",
     "static/js/2.5d1ed64a.chunk.js": "/steamroom/static/js/2.5d1ed64a.chunk.js",
     "static/js/2.5d1ed64a.chunk.js.map": "/steamroom/static/js/2.5d1ed64a.chunk.js.map",
     "index.html": "/steamroom/index.html",
-    "precache-manifest.633d55c31eb3b2a2d00538564ec14145.js": "/steamroom/precache-manifest.633d55c31eb3b2a2d00538564ec14145.js",
+    "precache-manifest.9adc0f7422af02e15b127190d28f7ca9.js": "/steamroom/precache-manifest.9adc0f7422af02e15b127190d28f7ca9.js",
     "service-worker.js": "/steamroom/service-worker.js",
     "static/css/main.3397eef7.chunk.css.map": "/steamroom/static/css/main.3397eef7.chunk.css.map",
     "static/js/2.5d1ed64a.chunk.js.LICENSE.txt": "/steamroom/static/js/2.5d1ed64a.chunk.js.LICENSE.txt"
@@ -17,6 +17,6 @@
     "static/js/runtime-main.c73a01e0.js",
     "static/js/2.5d1ed64a.chunk.js",
     "static/css/main.3397eef7.chunk.css",
-    "static/js/main.6143bd2d.chunk.js"
+    "static/js/main.c892b2ab.chunk.js"
   ]
 }

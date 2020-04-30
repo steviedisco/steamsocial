@@ -142,7 +142,7 @@ function PopulateList(props): any {
 
   const games = props.games;
 
-  if (!games.length)
+  if (!games || !games.length)
     return null;
 
   let output: any[] = [];
