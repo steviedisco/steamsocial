@@ -33,9 +33,15 @@ const getGames = async (steamid: string) => {
     return JSON.parse(cachedgames);
 
   const games = await fetch(`${gamesListUrl}?steamid=${steamid}`)
-    .then(response => response.json());
+    .then(response => response.json())
+    .then(games => games)
+    .catch(error => {
+      console.log('Request failed', error);
+    });
 
-    localStorage.setItem(key, JSON.stringify(games));
+    if (games) {
+      localStorage.setItem(key, JSON.stringify(games));
+    }
 
     return games;
 }
@@ -132,9 +138,11 @@ const process = async (libraries) => {
   unique.sort(compare2);
 
   // trim off games that are only owned by 1 users
-  return unique.filter(test => {
+  const filtered = unique.filter(test => {
     return test.owned > 1
   });
+
+  return filtered;
 }
 
 
@@ -142,8 +150,9 @@ function PopulateList(props): any {
 
   const games = props.games;
 
-  if (!games || !games.length)
+  if (!games || !games.length) {
     return null;
+  }
 
   let output: any[] = [];
 
@@ -151,8 +160,9 @@ function PopulateList(props): any {
     output.push(<Game game={game} />);
   });
 
-  if (output.length)
+  if (output.length) {
     return output;
+  }
 
   return null;
 }
@@ -173,17 +183,18 @@ function GameList() {
       'andreas3115',
     ];
 
-    const loadLibs = async () => {
+    const loadLibraries = async () => {
       return await load(handles);
     }
 
-    Promise.resolve(loadLibs())
-      .then(libs => {
-        process(libs)
+    loadLibraries()
+      .then(libraries => {
+        process(libraries)
           .then(games => {
-            setGames(games)
+            setGames(games);
           })
       });
+
   }, []);
 
   return (
