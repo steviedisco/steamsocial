@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Game from './game';
 
+var _ = require('lodash');
 
 const resolveUserUrl = 'https://9192zxrrp6.execute-api.eu-west-1.amazonaws.com/default/get_steamUserIdFromHandle_Function';
 const gamesListUrl = 'https://k14n0rcap5.execute-api.eu-west-1.amazonaws.com/default/get_userOwnedGames_Function';
@@ -64,13 +65,13 @@ const process = async (libraries) => {
 
   const keys = Object.keys(libraries);
 
-  keys.forEach(async (key) => {
+  keys.forEach(key => {
     const library = libraries[key];
     combined.push(...library);
   });
 
   // get all unique games in all libraries
-  let unique = [...new Set(combined)];
+  let unique = _.uniqWith(combined, _.isEqual);
 
   // order the unique games
   const compare = (a, b) => {
@@ -89,7 +90,7 @@ const process = async (libraries) => {
   unique.sort(compare);
 
   // count how many users own each game and add a property to record it
-  keys.forEach(async (key) => {
+  keys.forEach(key => {
 
     const library = libraries[key];
 
@@ -120,9 +121,9 @@ const process = async (libraries) => {
     const gameB = b.owned;
 
     let comparison = 0;
-    if (gameA > gameB) {
+    if (gameA < gameB) {
       comparison = 1;
-    } else if (gameA < gameB) {
+    } else if (gameA > gameB) {
       comparison = -1;
     }
     return comparison;
@@ -131,7 +132,9 @@ const process = async (libraries) => {
   unique.sort(compare2);
 
   // trim off games that are only owned by 1 users
-  return unique; //.filter(test => test.owned > 1)
+  return unique.filter(test => {
+    return test.owned > 1
+  });
 }
 
 
@@ -144,7 +147,7 @@ function PopulateList(props): any {
 
   let output: any[] = [];
 
-  games.forEach((game) => {
+  games.forEach(game => {
     output.push(<Game game={game} />);
   });
 
@@ -164,10 +167,10 @@ function GameList() {
     const handles: string[] =
     [
       'steviedisco',
-      // 'StealthBanana',
-      // 'chipbarm',
-      // 'andreas3115',
-      // 'Delphboy',
+      'delphboy',
+      'chipbarm',
+      'StealthBanana',
+      'andreas3115',
     ];
 
     const loadLibs = async () => {
@@ -175,8 +178,12 @@ function GameList() {
     }
 
     Promise.resolve(loadLibs())
-      .then(libs => process(libs)
-        .then(games => setGames(games)));
+      .then(libs => {
+        process(libs)
+          .then(games => {
+            setGames(games)
+          })
+      });
   }, []);
 
   return (
