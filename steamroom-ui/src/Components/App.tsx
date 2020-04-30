@@ -3,7 +3,19 @@ import './../styles/app.css';
 
 import GameList from './gameList';
 
+
+const margin = {
+  marginBottom: '20px'
+} as React.CSSProperties;
+
+
 function App() {
+
+  const clearCacheHandler = e => {
+    localStorage.clear();
+    window.location.reload(false);
+  }
+
   return (
     <>
       <div className="container">
@@ -17,6 +29,7 @@ function App() {
             </code>
           </pre>
         </div>
+        <div className="btn" style={margin} onClick={clearCacheHandler}>Clear cache</div>
       </div>
       <GameList />
     </>
