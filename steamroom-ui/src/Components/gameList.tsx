@@ -7,64 +7,12 @@ const resolveUserUrl = 'https://9192zxrrp6.execute-api.eu-west-1.amazonaws.com/d
 const gamesListUrl = 'https://k14n0rcap5.execute-api.eu-west-1.amazonaws.com/default/get_userOwnedGames_Function';
 
 
-const getUserId = async (handle: string) => {
 
-  const key = `${handle}_steamid`;
+const process = (libraries) => {
 
-  const cachedid = localStorage.getItem(key);
-  if (cachedid != null && cachedid !== '')
-    return JSON.parse(cachedid);
-
-   const steamid = await fetch(`${resolveUserUrl}?handle=${handle}`)
-      .then(response => response.json());
-
-      localStorage.setItem(key, JSON.stringify(steamid));
-
-    return steamid;
-}
-
-
-const getGames = async (steamid: string) => {
-
-  const key = `${steamid}_games`;
-
-  const cachedgames = localStorage.getItem(key);
-  if (cachedgames != null && cachedgames !== '')
-    return JSON.parse(cachedgames);
-
-  const games = await fetch(`${gamesListUrl}?steamid=${steamid}`)
-    .then(response => response.json())
-    .then(games => games)
-    .catch(error => {
-      console.log('Request failed', error);
-    });
-
-    if (games) {
-      localStorage.setItem(key, JSON.stringify(games));
-    }
-
-    return games;
-}
-
-
-const load = async (handles) => {
-
-  let libraries = {};
-
-  handles.forEach(async (handle) => {
-    const steamid: string = await getUserId(handle);
-    const games = await getGames(steamid);
-
-    if (games) {
-      libraries[steamid] = games;
-    }
-  });
-
-  return libraries;
-}
-
-
-const process = async (libraries) => {
+  if (!libraries) {
+    return null;
+  }
 
   // combine all libraries, duplicates included
   let combined: any[] = [];
@@ -146,10 +94,53 @@ const process = async (libraries) => {
 }
 
 
+
+const getUserId = async (handle: string): Promise<string> => {
+
+  const key = `${handle}_steamid`;
+
+  const cachedid = localStorage.getItem(key);
+  if (cachedid != null && cachedid !== '')
+    return JSON.parse(cachedid);
+
+  const response = await fetch(`${resolveUserUrl}?handle=${handle}`);
+  const steamid = await response.json();
+
+  localStorage.setItem(key, JSON.stringify(steamid));
+
+  return steamid;
+}
+
+
+
+const getGames = async (steamid) => {
+
+  const key = `${steamid}_games`;
+
+  const cachedgames = localStorage.getItem(key);
+  if (cachedgames != null && cachedgames !== '')
+    return JSON.parse(cachedgames);
+
+  const response = await fetch(`${gamesListUrl}?steamid=${steamid}`);
+  const games = await response.json();
+
+  if (games) {
+    localStorage.setItem(key, JSON.stringify(games));
+  }
+
+  return games;
+}
+
+
+
 function PopulateList(props): any {
 
-  const games = props.games;
+  const libraries = props.libraries;
+  if (!libraries || !Object.keys(libraries).length) {
+    return null;
+  }
 
+  const games = process(libraries);
   if (!games || !games.length) {
     return null;
   }
@@ -168,9 +159,40 @@ function PopulateList(props): any {
 }
 
 
+
 function GameList() {
 
-  const [games, setGames] = useState({});
+  const [libraries, setLibraries] = useState({});
+
+  const load = async (handles) => {
+
+    const getLibraries = async () => {
+
+      let libs = {};
+
+      var wait = new Promise((resolve, reject) => {
+        handles.forEach(async (handle, index, array) => {
+          await getUserId(handle)
+            .then(async steamid => {
+              await getGames(steamid)
+                .then(games => {
+                  if (games) {
+                    libs[steamid] = games;
+                  }
+                  if (index === array.length -1) resolve();
+                })
+            });
+        });
+      });
+
+      return wait.then(() => libs);
+    }
+
+    await getLibraries()
+      .then(libs => {
+        setLibraries(libs)
+      });
+  }
 
   useEffect(() => {
 
@@ -183,24 +205,14 @@ function GameList() {
       'andreas3115',
     ];
 
-    const loadLibraries = async () => {
-      return await load(handles);
-    }
-
-    loadLibraries()
-      .then(libraries => {
-        process(libraries)
-          .then(games => {
-            setGames(games);
-          })
-      });
+    load(handles)
 
   }, []);
 
   return (
     <div className="container">
       <div className="section">
-        <PopulateList games={games} />
+        { !libraries || !Object.keys(libraries).length ? <></> : <PopulateList libraries={libraries} /> }
       </div>
     </div>
   );
