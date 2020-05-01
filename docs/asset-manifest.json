@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/steamroom/static/css/main.3397eef7.chunk.css",
-    "main.js": "/steamroom/static/js/main.2a3f2ac9.chunk.js",
-    "main.js.map": "/steamroom/static/js/main.2a3f2ac9.chunk.js.map",
+    "main.js": "/steamroom/static/js/main.b1fe8772.chunk.js",
+    "main.js.map": "/steamroom/static/js/main.b1fe8772.chunk.js.map",
     "runtime-main.js": "/steamroom/static/js/runtime-main.c73a01e0.js",
     "runtime-main.js.map": "/steamroom/static/js/runtime-main.c73a01e0.js.map",
-    "static/js/2.5d1ed64a.chunk.js": "/steamroom/static/js/2.5d1ed64a.chunk.js",
-    "static/js/2.5d1ed64a.chunk.js.map": "/steamroom/static/js/2.5d1ed64a.chunk.js.map",
+    "static/js/2.ef207832.chunk.js": "/steamroom/static/js/2.ef207832.chunk.js",
+    "static/js/2.ef207832.chunk.js.map": "/steamroom/static/js/2.ef207832.chunk.js.map",
     "index.html": "/steamroom/index.html",
-    "precache-manifest.fb84fe5301a0162a7bbae97c987001dc.js": "/steamroom/precache-manifest.fb84fe5301a0162a7bbae97c987001dc.js",
+    "precache-manifest.932ec4cccfcdc5b7b3ff33928c7ea190.js": "/steamroom/precache-manifest.932ec4cccfcdc5b7b3ff33928c7ea190.js",
     "service-worker.js": "/steamroom/service-worker.js",
     "static/css/main.3397eef7.chunk.css.map": "/steamroom/static/css/main.3397eef7.chunk.css.map",
-    "static/js/2.5d1ed64a.chunk.js.LICENSE.txt": "/steamroom/static/js/2.5d1ed64a.chunk.js.LICENSE.txt"
+    "static/js/2.ef207832.chunk.js.LICENSE.txt": "/steamroom/static/js/2.ef207832.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.c73a01e0.js",
-    "static/js/2.5d1ed64a.chunk.js",
+    "static/js/2.ef207832.chunk.js",
     "static/css/main.3397eef7.chunk.css",
-    "static/js/main.2a3f2ac9.chunk.js"
+    "static/js/main.b1fe8772.chunk.js"
   ]
 }
