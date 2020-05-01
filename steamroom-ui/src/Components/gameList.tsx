@@ -91,7 +91,7 @@ const process = (libraries) => {
     return test.owned > 1
   });
 
-  return filtered
+  return unique;
 }
 
 
@@ -118,9 +118,11 @@ const getGames = async (steamid) => {
 
   const key = `${steamid}_games`;
 
+/*
   const cachedgames = localStorage.getItem(key);
   if (cachedgames != null && cachedgames !== '')
     return JSON.parse(cachedgames);
+*/
 
   const fetchGames = (steamid) => {
     return new Promise((resolve) => {
@@ -132,7 +134,7 @@ const getGames = async (steamid) => {
           })
           .catch(err => {
             console.log("Game list fetch failed");
-            return null;
+            resolve(null);
           });
         })();
       });
@@ -184,31 +186,55 @@ function PopulateList(props): any {
 }
 
 
-const fetchData = (handles) => {
+const fetchLibraries = async (handles) => {
 
-  let libs = {};
-
-  return new Promise((resolve) => {
-    handles.forEach(async (handle, index, array) => {
-      await getUserId(handle)
-        .then(async steamid => {
-          await getGames(steamid)
-            .then(games => {
-              if (games) {
-                libs[steamid] = games;
-              }
-              if (index === array.length - 1) {
-                resolve(libs);
-              }
-            })
-        });
+  const fetchLibrary = (handle) => {
+    return new Promise((resolve) => {
+      (async () => {
+        await getUserId(handle)
+          .then(async steamid => {
+            await getGames(steamid)
+              .then(games => {
+                  resolve(games);
+              })
+          });
+        })();
       });
+  };
+
+  const fetchAll = () => {
+
+    return new Promise((resolve) => {
+
+      let libs = {};
+      let resolvedCount = 0;
+
+      for (let i = 0; i < handles.length; i++) {
+        const handle = handles[i];
+
+        (async () => {
+          const library = await fetchLibrary(handle);
+
+          if (library) {
+            libs[handle] = library;
+          }
+
+          resolvedCount++;
+          if (resolvedCount === handles.length) {
+            resolve(libs);
+          }
+        })();
+      }
     });
   };
 
-  const getLibraries = async (handles) => {
-    return await fetchData(handles);
-  };
+  const libraries = await fetchAll();
+  return libraries;
+};
+
+const getLibraries = async (handles) => {
+  return await fetchLibraries(handles);
+};
 
 
 function GameList() {
