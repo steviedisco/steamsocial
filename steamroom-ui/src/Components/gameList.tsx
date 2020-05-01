@@ -91,7 +91,7 @@ const process = (libraries) => {
     return test.owned > 1
   });
 
-  return unique;
+  return filtered;
 }
 
 
@@ -118,11 +118,9 @@ const getGames = async (steamid) => {
 
   const key = `${steamid}_games`;
 
-/*
   const cachedgames = localStorage.getItem(key);
   if (cachedgames != null && cachedgames !== '')
     return JSON.parse(cachedgames);
-*/
 
   const fetchGames = (steamid) => {
     return new Promise((resolve) => {
@@ -132,7 +130,7 @@ const getGames = async (steamid) => {
           .then(response => {
             resolve(response)
           })
-          .catch(err => {
+          .catch(() => {
             console.log("Game list fetch failed");
             resolve(null);
           });
@@ -206,25 +204,27 @@ const fetchLibraries = async (handles) => {
 
     return new Promise((resolve) => {
 
-      let libs = {};
-      let resolvedCount = 0;
+      (async () => {
+        let libs = {};
+        let resolvedCount = 0;
 
-      for (let i = 0; i < handles.length; i++) {
-        const handle = handles[i];
+        for (let i = 0; i < handles.length; i++) {
 
-        (async () => {
-          const library = await fetchLibrary(handle);
+          const handle = handles[i];
 
-          if (library) {
-            libs[handle] = library;
-          }
+          await (async () => {
+            const library = await fetchLibrary(handle);
+
+            if (library) {
+              libs[handle] = library;
+            }
+          })();
 
           resolvedCount++;
           if (resolvedCount === handles.length) {
             resolve(libs);
           }
-        })();
-      }
+      }})();
     });
   };
 
