@@ -11,7 +11,7 @@ const margin = {
 
 function App() {
 
-  const clearCacheHandler = e => {
+  const clearCacheHandler = () => {
     localStorage.clear();
     window.location.reload(false);
   }

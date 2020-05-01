@@ -57,6 +57,7 @@ const process = (libraries) => {
 
     // loop through the owned list and increase the count in the unique list
     owned.forEach(game => {
+
       const current = unique.filter(test => test.appID === game.appID)
 
       if (current.length === 1) {
@@ -90,7 +91,7 @@ const process = (libraries) => {
     return test.owned > 1
   });
 
-  return filtered;
+  return filtered
 }
 
 
@@ -121,8 +122,23 @@ const getGames = async (steamid) => {
   if (cachedgames != null && cachedgames !== '')
     return JSON.parse(cachedgames);
 
-  const response = await fetch(`${gamesListUrl}?steamid=${steamid}`);
-  const games = await response.json();
+  const fetchGames = (steamid) => {
+    return new Promise((resolve) => {
+      (async () => {
+        await fetch(`${gamesListUrl}?steamid=${steamid}`)
+          .then(response => response.json())
+          .then(response => {
+            resolve(response)
+          })
+          .catch(err => {
+            console.log("Game list fetch failed");
+            return null;
+          });
+        })();
+      });
+  };
+
+  const games = await fetchGames(steamid);
 
   if (games) {
     localStorage.setItem(key, JSON.stringify(games));
@@ -132,23 +148,32 @@ const getGames = async (steamid) => {
 }
 
 
-
 function PopulateList(props): any {
 
-  const libraries = props.libraries;
-  if (!libraries || !Object.keys(libraries).length) {
+  let { libraries } = props;
+
+  if (!libraries) {
+    console.log("Libraries empty");
     return null;
+  } else {
+    const keys = Object.keys(libraries);
+    if (!keys.length) {
+      console.log("Libraries empty");
+      return null;
+    }
   }
 
   const games = process(libraries);
   if (!games || !games.length) {
+    console.log("Games empty");
     return null;
   }
 
   let output: any[] = [];
 
   games.forEach(game => {
-    output.push(<Game game={game} />);
+    const key = `game_${game.appID}`;
+    output.push(<Game key={key} game={game} />);
   });
 
   if (output.length) {
@@ -159,40 +184,36 @@ function PopulateList(props): any {
 }
 
 
+const fetchData = (handles) => {
+
+  let libs = {};
+
+  return new Promise((resolve) => {
+    handles.forEach(async (handle, index, array) => {
+      await getUserId(handle)
+        .then(async steamid => {
+          await getGames(steamid)
+            .then(games => {
+              if (games) {
+                libs[steamid] = games;
+              }
+              if (index === array.length - 1) {
+                resolve(libs);
+              }
+            })
+        });
+      });
+    });
+  };
+
+  const getLibraries = async (handles) => {
+    return await fetchData(handles);
+  };
+
 
 function GameList() {
 
-  const [libraries, setLibraries] = useState({});
-
-  const load = async (handles) => {
-
-    const getLibraries = async () => {
-
-      let libs = {};
-
-      var wait = new Promise((resolve, reject) => {
-        handles.forEach(async (handle, index, array) => {
-          await getUserId(handle)
-            .then(async steamid => {
-              await getGames(steamid)
-                .then(games => {
-                  if (games) {
-                    libs[steamid] = games;
-                  }
-                  if (index === array.length -1) resolve();
-                })
-            });
-        });
-      });
-
-      return wait.then(() => libs);
-    }
-
-    await getLibraries()
-      .then(libs => {
-        setLibraries(libs)
-      });
-  }
+  const [libraries, setLibraries] = useState({} as any);
 
   useEffect(() => {
 
@@ -205,14 +226,17 @@ function GameList() {
       'andreas3115',
     ];
 
-    load(handles)
+    getLibraries(handles)
+      .then(libs => {
+        setLibraries(libs)
+      });
 
   }, []);
 
   return (
     <div className="container">
       <div className="section">
-        { !libraries || !Object.keys(libraries).length ? <></> : <PopulateList libraries={libraries} /> }
+        <PopulateList libraries={libraries} />
       </div>
     </div>
   );

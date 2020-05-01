@@ -19,20 +19,20 @@ const row = {
   display: 'table-row',
 } as React.CSSProperties;
 
+
+
 function Game(props) {
 
-  const key = props.game.appID;
-  const name = props.game.name;
-  const logoUrl = props.game.logoURL;
-  const owned = props.game.owned;
+  let { game } = props;
+  const key = `img_${game.appID}`;
 
   return (
     <div style={div}>
       <div style={inline}>
-        <h5 style={row}>{name}</h5>
-        <h5 style={row}>x{owned}</h5>
+        <h5 style={row}>{game.name}</h5>
+        <h5 style={row}>x{game.owned}</h5>
       </div>
-      <img key={key} src={logoUrl} alt={name} style={img} />
+      <img key={key} src={game.logoURL} alt={game.name} style={img} />
     </div>
   );
 }
