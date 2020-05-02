@@ -8,7 +8,8 @@ const img = {
 } as React.CSSProperties;
 
 const userimg = {
-  marginRight: '7px'
+  marginRight: '7px',
+  marginBottom: '7px'
 } as React.CSSProperties;
 
 const imgs = {
@@ -17,7 +18,7 @@ const imgs = {
 } as React.CSSProperties;
 
 const users = {
-  display: 'inline-block',
+  display: 'inline',
 } as React.CSSProperties;
 
 
@@ -31,7 +32,14 @@ function Game(props) {
     <div style={imgs}>
       <img key={key} src={game.logoURL} alt={game.name} style={img} />
       <div style={users}>
-        { game.users.map(user => <img key={`${key}_${user.nickname}`} src={user.avatar.medium} alt={user.nickname} title={user.nickname} style={userimg} width="29" height="29" />) }
+        { game.users.map(user =>
+          <img key={`${key}_${user.nickname}`}
+               src={user.avatar.medium}
+               alt={user.nickname}
+               title={user.nickname}
+               style={userimg}
+               width="29"
+               height="29" />) }
       </div>
     </div>
   );
