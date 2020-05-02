@@ -32,11 +32,8 @@ function UserAdd(props) {
   return (
     <div style={block}>
       <div style={inline}>
-        <i className="inputIcon material-icons">face</i>
-        <input className="inputIcon" placeholder="Add Steam User" value={handle} onChange={handleChange} />
-      </div>
-      <div style={inline}>
         <i className="inputIcon material-icons" style={pointer} onClick={addHandle}>add_circle</i>
+        <input className="inputIcon" placeholder="Add Steam Username" value={handle} onChange={handleChange} />
       </div>
     </div>
   );

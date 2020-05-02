@@ -12,9 +12,6 @@ const pointer = {
   cursor: 'pointer'
 } as React.CSSProperties;
 
-const inline = {
-  display: 'inline',
-} as React.CSSProperties;
 
 
 function UserList(props) {
@@ -47,11 +44,8 @@ function UserList(props) {
         if (user) {
           return (<>
             <div style={block}>
-              <i className="inputIcon material-icons">face</i>
+              <i className="inputIcon material-icons" style={pointer} onClick={() => removeHandle(user.nickname)}>remove_circle</i>
               <input key={`user_${user.nickname}`} className="inputIcon" value={user.nickname} disabled={true} />
-              <div style={inline}>
-                <i className="inputIcon material-icons" style={pointer} onClick={() => removeHandle(user.nickname)}>remove_circle</i>
-              </div>
             </div>
             </>
           );

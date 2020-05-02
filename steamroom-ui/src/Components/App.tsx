@@ -51,6 +51,9 @@ function App() {
           return;
         }
       })();
+    } else {
+      alert("User already added");
+      return;
     }
   };
 
@@ -73,7 +76,6 @@ function App() {
 
   return (
     <div className="container">
-      <div className="btns row themeSelector" style={themeBar}></div>
       <div className="section">
         <div className="header">
           <h2>Steam Room</h2>
@@ -84,6 +86,7 @@ function App() {
           </p>
         </div>
       </div>
+      <div className="btns row themeSelector" style={themeBar}></div>
       <div className="section">
         <div className="body">
           <UserList handles={handles} removeUserHandler={removeUserHandler} />
