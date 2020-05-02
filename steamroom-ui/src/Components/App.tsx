@@ -9,7 +9,6 @@ import * as client from './../library-client';
 
 
 const themeBar = {
-  display: 'block',
   marginTop: '20px',
   textAlign: 'right'
 } as React.CSSProperties;
@@ -94,6 +93,7 @@ function App() {
   return (
     <div className="container">
       <div className="section">
+        <div className="btns row themeSelector" style={themeBar}></div>
         <div className="header">
           <h2>Steam Room</h2>
         </div>
@@ -103,16 +103,17 @@ function App() {
           </p>
         </div>
       </div>
-      <div className="btns row themeSelector" style={themeBar}></div>
       <div className="section">
         <div className="body">
           <UserList handles={handles} removeUserHandler={removeUserHandler} />
           <UserAdd addUserHandler={addUserHandler} />
-          <div className="btn" style={marginBottom} onClick={clearCacheHandler}>Clear cache</div>
+          { handles.length < 2 ? <></> : <div className="btn" style={marginBottom} onClick={clearCacheHandler}>Refresh</div> }
         </div>
       </div>
       <div className="section">
         <div className="body">
+          <br/>
+          <br/>
           <GameList handles={handles} />
         </div>
       </div>
