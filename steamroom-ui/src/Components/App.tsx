@@ -10,6 +10,7 @@ import * as client from './../library-client';
 
 const themeBar = {
   marginTop: '20px',
+  display: 'block',
   textAlign: 'right'
 } as React.CSSProperties;
 
