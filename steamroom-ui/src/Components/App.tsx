@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './../styles/app.css';
 
 import UserList from './userList';
@@ -27,8 +27,22 @@ function App() {
 
   const [handles, setHandles] = useState([] as string[]);
 
+  useEffect(() => {
+
+    const cacheValue = localStorage.getItem("handles")
+
+    if (cacheValue && cacheValue !== '') {
+      const cachedHandles = JSON.parse(cacheValue) as string[];
+      if (cachedHandles.length) {
+        setHandles(cachedHandles)
+      }
+    }
+
+  }, []);
+
   const clearCacheHandler = () => {
     localStorage.clear();
+    localStorage.setItem("handles", JSON.stringify(handles));
     window.location.reload(false);
   }
 
@@ -45,7 +59,9 @@ function App() {
         const summary = await client.fetchSummary(handle);
 
         if (summary) {
-          setHandles(handles.concat(handle));
+          const added = handles.concat(handle);
+          localStorage.setItem("handles", JSON.stringify(added));
+          setHandles(added);
         } else {
           alert("User not found");
           return;
@@ -66,9 +82,10 @@ function App() {
 
     const index = handles.indexOf(handle);
     if (index > -1) {
-      const copy = handles.splice(0);
-      copy.splice(index, 1);
-      setHandles(copy);
+      const removed = handles.splice(0);
+      removed.splice(index, 1);
+      localStorage.setItem("handles", JSON.stringify(removed));
+      setHandles(removed);
     } else {
       alert("User not found");
     }

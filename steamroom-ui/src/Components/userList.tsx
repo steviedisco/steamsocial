@@ -44,7 +44,7 @@ function UserList(props) {
         if (user) {
           return (<>
             <div style={block}>
-              <i className="inputIcon material-icons" style={pointer} onClick={() => removeHandle(user.nickname)}>remove_circle</i>
+              <i className="inputIcon material-icons" style={pointer} onClick={() => removeHandle(handle)}>remove_circle</i>
               <input key={`user_${user.nickname}`} className="inputIcon" value={user.nickname} disabled={true} />
             </div>
             </>

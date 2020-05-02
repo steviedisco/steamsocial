@@ -69,17 +69,6 @@ function GameList(props) {
 
   useEffect(() => {
 
-    /*
-    const handles: string[] =
-    [
-      'steviedisco',
-      'delphboy',
-      'chipbarm',
-      'StealthBanana',
-      'andreas3115',
-    ];
-    */
-
     client.getLibraries(handles)
       .then(libs => {
         setLibraries(libs)

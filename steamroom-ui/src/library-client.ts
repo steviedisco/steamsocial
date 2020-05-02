@@ -113,7 +113,7 @@ const getUserId = async (handle: string): Promise<string> => {
 
 
 
-const getGames = async (steamid) => {
+const getGames = async (steamid, handle) => {
 
   const key = `${steamid}_games`;
 
@@ -130,7 +130,7 @@ const getGames = async (steamid) => {
             resolve(response)
           })
           .catch(() => {
-            console.log("Game list fetch failed");
+            alert(`Game list fetch failed for ${handle}`);
             resolve(null);
           });
         })();
@@ -154,7 +154,7 @@ const fetchLibraries = async (handles) => {
       (async () => {
         await getUserId(handle)
           .then(async steamid => {
-            await getGames(steamid)
+            await getGames(steamid, handle)
               .then(games => {
                   resolve(games);
               })
