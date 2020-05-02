@@ -10,35 +10,23 @@ const userimg = {
   marginRight: '10px'
 } as React.CSSProperties;
 
-const div = {
+const headerRow = {
   display: 'table',
-  marginBottom: '20px'
+  marginBottom: '10px'
 } as React.CSSProperties;
 
-const title = {
-  display: 'inline-block',
-  width: '400px',
-  maxWidth: '400px',
-  marginRight: '20px'
+const imgs = {
+  display: 'table',
+  marginBottom: '30px'
 } as React.CSSProperties;
 
 const users = {
   display: 'inline-block',
 } as React.CSSProperties;
 
-const row = {
-  display: 'table-row',
+const header = {
+  display: 'inline',
 } as React.CSSProperties;
-
-const cell = {
-  display: 'table-cell',
-  textOverflow: 'ellipsis',
-  overflow: 'hidden',
-  width: '400px',
-  maxWidth: '400px',
-  whiteSpace: 'nowrap'
-} as React.CSSProperties;
-
 
 
 function Game(props) {
@@ -47,16 +35,16 @@ function Game(props) {
   const key = `img_${game.appID}`;
 
   return (
-    <div style={div}>
-      <div style={title}>
-        <h5 style={cell}>{game.name}</h5>
-        <h5 style={row}>x{game.owned}</h5>
-      </div>
+    <>
+    <div style={headerRow}>
+      <h5 style={header}>x{game.owned} {game.name}</h5>
+    </div>
+    <div style={imgs}>
       <div style={users}>
-        { game.users.map(user => <img key={`${key}_${user.nickname}`} src={user.avatar.medium} alt={user.nickname} style={userimg} />) }
+        { game.users.map(user => <img key={`${key}_${user.nickname}`} src={user.avatar.medium} alt={user.nickname} title={user.nickname} style={userimg} />) }
       </div>
       <img key={key} src={game.logoURL} alt={game.name} style={img} />
-    </div>
+    </div></>
   );
 }
 

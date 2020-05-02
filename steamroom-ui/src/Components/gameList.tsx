@@ -7,7 +7,7 @@ import * as client from './../library-client';
 
 function PopulateList(props): any {
 
-  let { libraries, summaries } = props;
+  let { handles, libraries, summaries } = props;
 
   if (!libraries) {
     console.log("Libraries empty");
@@ -29,6 +29,11 @@ function PopulateList(props): any {
       console.log("Summaries empty");
       return null;
     }
+  }
+
+  // hack-tastic, to get round async updates
+  if (!(handles.length === Object.keys(libraries).length &&  Object.keys(libraries).length === Object.keys(summaries).length)) {
+    return null;
   }
 
   const games = client.process(libraries, summaries);
@@ -55,13 +60,16 @@ function PopulateList(props): any {
 
 
 
-function GameList() {
+function GameList(props) {
+
+  let { handles } = props;
 
   const [libraries, setLibraries] = useState({} as any);
   const [summaries, setSummaries] = useState({} as any);
 
   useEffect(() => {
 
+    /*
     const handles: string[] =
     [
       'steviedisco',
@@ -70,6 +78,7 @@ function GameList() {
       'StealthBanana',
       'andreas3115',
     ];
+    */
 
     client.getLibraries(handles)
       .then(libs => {
@@ -81,13 +90,19 @@ function GameList() {
         setSummaries(sums)
       });
 
-  }, []);
+  }, [handles]);
+
+
+
+  if (handles.length < 2) {
+    return null;
+  }
+
 
   return (
-    <div className="container">
-      <div className="section">
-        <PopulateList libraries={libraries} summaries={summaries} />
-      </div>
+    <div>
+      <h4>Matched Games</h4>
+      <PopulateList handles={handles} libraries={libraries} summaries={summaries} />
     </div>
   );
 }

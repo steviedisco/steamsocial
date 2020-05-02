@@ -206,21 +206,24 @@ export const getSummaries = async (handles) => {
 };
 
 
-const fetchSummaries = async (handles) => {
+export const fetchSummary = (handle) => {
+  return new Promise((resolve, reject) => {
+    (async () => {
+      await getUserId(handle)
+        .then(async steamid => {
+          await getProfile(steamid)
+            .then(summary => {
+                resolve(summary);
+            })
+            .catch(err => resolve(null));
+        })
+        .catch(err => resolve(null));
+      })();
+    });
+};
 
-  const fetchSummary = (handle) => {
-    return new Promise((resolve) => {
-      (async () => {
-        await getUserId(handle)
-          .then(async steamid => {
-            await getProfile(steamid)
-              .then(summary => {
-                  resolve(summary);
-              })
-          });
-        })();
-      });
-  };
+
+const fetchSummaries = async (handles) => {
 
   const fetchAll = () => {
 
