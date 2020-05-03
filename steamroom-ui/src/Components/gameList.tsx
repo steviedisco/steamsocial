@@ -78,7 +78,6 @@ function GameList(props) {
   const [libraries, setLibraries] = useState({} as any);
   const [summaries, setSummaries] = useState({} as any);
   const [multiplayerFlag, setMultiplayerFlag] = useState(true);
-  const [scriptAdded, setScriptAdded] = useState(false);
 
   useEffect(() => {
 
@@ -92,26 +91,11 @@ function GameList(props) {
         setSummaries(sums)
       });
 
-    let script = null as any;
+    const script = document.createElement('script');
+    script.type = "text/javascript"
+    script.innerHTML = `fluid.set("pref-multiplayerFlag", "${multiplayerFlag}");`;
+    document.body.appendChild(script);
 
-    if (!scriptAdded) {
-      script = document.createElement('script');
-      script.type = "text/javascript"
-      script.async = true;
-
-      const initialSet = `fluid.set("pref-multiplayerFlag", "${multiplayerFlag}");`;
-      script.innerHTML = `${initialSet}`;
-
-      document.body.appendChild(script);
-
-      setScriptAdded(true);
-    };
-
-    return () => {
-      if (script) {
-        document.body.removeChild(script);
-      }
-    }
   }, [handles]);
 
 
@@ -126,8 +110,7 @@ function GameList(props) {
   const flagHandler = (event) => {
     const script = document.createElement('script');
     script.type = "text/javascript"
-    script.async = true;
-    script.innerHTML = `fluid.set('pref-multiplayerFlag')`;
+    script.innerHTML = `fluid.set("pref-multiplayerFlag", "${!multiplayerFlag}");`;
     document.body.appendChild(script);
 
     setMultiplayerFlag(!multiplayerFlag);
