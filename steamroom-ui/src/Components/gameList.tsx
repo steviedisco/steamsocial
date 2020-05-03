@@ -3,11 +3,17 @@ import Game from './game';
 
 import * as client from './../library-client';
 
+const multiplayerIds = require('./../data/multiplayer.json');
+
+const marginBottom = {
+  marginBottom: '20px'
+} as React.CSSProperties;
+
 
 
 function PopulateList(props): any {
 
-  let { handles, libraries, summaries } = props;
+  let { handles, libraries, summaries, multiplayerOnly } = props;
 
   if (!libraries) {
     console.log("Libraries empty");
@@ -46,6 +52,11 @@ function PopulateList(props): any {
 
   games.forEach(game => {
     const key = `game_${game.appID}`;
+
+    if (multiplayerOnly && !multiplayerIds.includes(game.appID)) {
+      return;
+    }
+
     output.push(<Game key={key} game={game} />);
   });
 
@@ -66,6 +77,8 @@ function GameList(props) {
 
   const [libraries, setLibraries] = useState({} as any);
   const [summaries, setSummaries] = useState({} as any);
+  const [multiplayerFlag, setMultiplayerFlag] = useState(true);
+  const [scriptAdded, setScriptAdded] = useState(false);
 
   useEffect(() => {
 
@@ -79,6 +92,26 @@ function GameList(props) {
         setSummaries(sums)
       });
 
+    let script = null as any;
+
+    if (!scriptAdded) {
+      script = document.createElement('script');
+      script.type = "text/javascript"
+      script.async = true;
+
+      const initialSet = `fluid.set("pref-multiplayerFlag", "${multiplayerFlag}");`;
+      script.innerHTML = `${initialSet}`;
+
+      document.body.appendChild(script);
+
+      setScriptAdded(true);
+    };
+
+    return () => {
+      if (script) {
+        document.body.removeChild(script);
+      }
+    }
   }, [handles]);
 
 
@@ -88,10 +121,24 @@ function GameList(props) {
   }
 
 
+
+
+  const flagHandler = (event) => {
+    const script = document.createElement('script');
+    script.type = "text/javascript"
+    script.async = true;
+    script.innerHTML = `fluid.set('pref-multiplayerFlag')`;
+    document.body.appendChild(script);
+
+    setMultiplayerFlag(!multiplayerFlag);
+  }
+
   return (
     <div>
       <h4>Matched Games</h4>
-      <PopulateList handles={handles} libraries={libraries} summaries={summaries} />
+      <div className="switch pref-multiplayerFlag" style={marginBottom} onClick={flagHandler}><span className="head"></span></div>
+      <div className="label" style={marginBottom}>Multiplayer only</div>
+      <PopulateList handles={handles} libraries={libraries} summaries={summaries} multiplayerOnly={multiplayerFlag} />
     </div>
   );
 }

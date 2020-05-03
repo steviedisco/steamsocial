@@ -18,6 +18,13 @@ export const process = (libraries, summaries) => {
 
   keys.forEach(key => {
     const library = libraries[key];
+
+    // wipe old data
+    library.forEach(game => {
+      delete game.owned;
+      delete game.users;
+    });
+
     combined.push(...library);
   });
 
