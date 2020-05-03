@@ -31,7 +31,7 @@ function App() {
 
     const cacheValue = localStorage.getItem("handles")
 
-    if (cacheValue && cacheValue !== '' && !handles.length) {
+    if (cacheValue && cacheValue !== '') {
       const cachedHandles = JSON.parse(cacheValue) as string[];
       if (cachedHandles.length) {
         setHandles(cachedHandles)
