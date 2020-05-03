@@ -137,7 +137,7 @@ const getGames = async (steamid, handle) => {
             resolve(response)
           })
           .catch(() => {
-            alert(`Game list fetch failed for ${handle}`);
+            alert(`Game list fetch failed for ${handle}. Are the games listed as public?`);
             resolve(null);
           });
         })();
