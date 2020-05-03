@@ -41,8 +41,11 @@ function App() {
   }, []);
 
   const clearCacheHandler = () => {
+    const theme = localStorage.getItem("fluidTheme") as string;
     localStorage.clear();
     localStorage.setItem("handles", JSON.stringify(handles));
+    localStorage.setItem("fluidTheme", theme);
+
     window.location.reload(false);
   }
 
@@ -107,7 +110,7 @@ function App() {
       <div className="section">
         <div className="body">
           <UserList handles={handles} removeUserHandler={removeUserHandler} />
-          <UserAdd addUserHandler={addUserHandler} />
+          <UserAdd addUserHandler={addUserHandler} handleCount={handles.length} />
           { handles.length < 2 ? <></> : <div className="btn" style={marginBottom} onClick={clearCacheHandler}>Refresh</div> }
         </div>
       </div>
