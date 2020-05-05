@@ -4,15 +4,9 @@ import './../styles/app.css';
 import UserList from './userList';
 import UserAdd from './userAdd';
 import GameList from './gameList';
+import Theme from './theme';
 
 import * as client from './../library-client';
-
-
-const themeBar = {
-  marginTop: '20px',
-  display: 'block',
-  textAlign: 'right'
-} as React.CSSProperties;
 
 const marginBottom = {
   marginBottom: '60px'
@@ -97,7 +91,9 @@ function App() {
   return (
     <div className="container">
       <div className="section">
-        <div className="btns row themeSelector" style={themeBar}></div>
+        <div className="body">
+          <Theme />
+        </div>
         <div className="header">
           <h2>Steam Room</h2>
         </div>

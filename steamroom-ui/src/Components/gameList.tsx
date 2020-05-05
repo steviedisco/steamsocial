@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Game from './game';
-
 import * as client from './../library-client';
 
 const multiplayerIds = require('./../data/multiplayer.json');
@@ -13,61 +12,30 @@ const marginBottom = {
 
 function PopulateList(props): any {
 
-  let { handles, libraries, summaries, multiplayerOnly } = props;
+    let { games, multiplayerOnly } = props;
 
-  if (!libraries) {
-    console.log("Libraries empty");
-    return null;
-  } else {
-    const keys = Object.keys(libraries);
-    if (!keys.length) {
-      console.log("Libraries empty");
+    if (!games || !games.length) {
       return null;
     }
-  }
 
-  if (!summaries) {
-    console.log("Summaries empty");
-    return null;
-  } else {
-    const keys = Object.keys(summaries);
-    if (!keys.length) {
-      console.log("Summaries empty");
-      return null;
-    }
-  }
+    let output: any[] = [];
 
-  // hack-tastic, to get round async updates
-  if (!(handles.length === Object.keys(libraries).length &&  Object.keys(libraries).length === Object.keys(summaries).length)) {
-    return null;
-  }
+    games.forEach(game => {
+      const key = `game_${game.appID}`;
 
-  const games = client.process(libraries, summaries);
-  if (!games || !games.length) {
-    console.log("Games empty");
-    return null;
-  }
+      if (multiplayerOnly && !multiplayerIds.includes(game.appID)) {
+        return;
+      }
 
-  let output: any[] = [];
+      output.push(<Game key={key} game={game} />);
+    });
 
-  games.forEach(game => {
-    const key = `game_${game.appID}`;
-
-    if (multiplayerOnly && !multiplayerIds.includes(game.appID)) {
-      return;
+    if (output.length) {
+      return output;
     }
 
-    output.push(<Game key={key} game={game} />);
-  });
-
-  if (output.length) {
-    return output;
-  }
-
-  return null;
+    return null;
 }
-
-
 
 
 
@@ -75,9 +43,33 @@ function GameList(props) {
 
   let { handles } = props;
 
+  const [games, setGames] = useState({} as any);
   const [libraries, setLibraries] = useState({} as any);
   const [summaries, setSummaries] = useState({} as any);
   const [multiplayerFlag, setMultiplayerFlag] = useState(true);
+
+  const ensureData = () => {
+    if (!libraries) {
+      return false;
+    } else {
+      const keys = Object.keys(libraries);
+      if (!keys.length) {
+        return false;
+      }
+    }
+
+    if (!summaries) {
+      return false;
+    } else {
+      const keys = Object.keys(summaries);
+      if (!keys.length) {
+        return false;
+      }
+    }
+
+    return true;
+  };
+
 
   useEffect(() => {
 
@@ -96,7 +88,29 @@ function GameList(props) {
     script.innerHTML = `fluid.set("pref-multiplayerFlag", "${multiplayerFlag}");`;
     document.body.appendChild(script);
 
+    // eslint-disable-next-line
   }, [handles]);
+
+
+
+  useEffect(() => {
+
+    if (!ensureData()) {
+      return;
+    }
+
+    // hack-tastic, to get round async updates
+    if (!(handles.length === Object.keys(libraries).length &&  Object.keys(libraries).length === Object.keys(summaries).length)) {
+      return;
+    }
+
+    const games = client.process(libraries, summaries);
+
+    setGames(games);
+
+  // eslint-disable-next-line
+}, [libraries, summaries]);
+
 
 
 
@@ -104,6 +118,10 @@ function GameList(props) {
     return null;
   }
 
+
+  if (!ensureData()) {
+    return null;
+  }
 
 
 
@@ -121,7 +139,7 @@ function GameList(props) {
       <h4>Matched Games</h4>
       <div className="switch pref-multiplayerFlag" style={marginBottom} onClick={flagHandler}><span className="head"></span></div>
       <div className="label" style={marginBottom}>Multiplayer only</div>
-      <PopulateList handles={handles} libraries={libraries} summaries={summaries} multiplayerOnly={multiplayerFlag} />
+      <PopulateList games={games} multiplayerOnly={multiplayerFlag} />
     </div>
   );
 }

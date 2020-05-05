@@ -42,16 +42,16 @@ function UserList(props) {
       handles.map(handle => {
         const user = summaries[handle];
         if (user) {
-          return (<>
-            <div style={block}>
-              <i className="inputIcon material-icons" style={pointer} onClick={() => removeHandle(handle)}>remove_circle</i>
-              <input key={`user_${user.nickname}`} className="inputIcon" value={user.nickname} disabled={true} />
+          return (<div key={`user_${user.nickname}`}>
+              <div style={block}>
+                <i className="inputIcon material-icons" style={pointer} onClick={() => removeHandle(handle)}>remove_circle</i>
+                <input  className="inputIcon" value={user.nickname} disabled={true} />
+              </div>
             </div>
-            </>
           );
         }
 
-        return <></>;
+        return null;
       })
     }
   </div>);

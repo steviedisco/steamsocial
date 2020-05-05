@@ -30,6 +30,7 @@ function Game(props) {
 
   return (
     <div style={imgs}>
+      <h5>{game.name}</h5>
       <img key={key} src={game.logoURL} alt={game.name} style={img} />
       <div style={users}>
         { game.users.map(user =>
