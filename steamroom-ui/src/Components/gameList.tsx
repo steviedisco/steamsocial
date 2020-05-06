@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Game from './game';
 import * as client from './../library-client';
 
@@ -41,12 +41,16 @@ function PopulateList(props): any {
 
 function GameList(props) {
 
-  let { handles } = props;
+  let { handles, scroll } = props;
 
   const [games, setGames] = useState({} as any);
   const [libraries, setLibraries] = useState({} as any);
   const [summaries, setSummaries] = useState({} as any);
   const [multiplayerFlag, setMultiplayerFlag] = useState(true);
+
+  const listRef = useRef(null);
+  const scrollToRef = (ref) => ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const scrollToList = () => scrollToRef(listRef);
 
   const ensureData = () => {
     if (!libraries) {
@@ -109,7 +113,18 @@ function GameList(props) {
     setGames(games);
 
   // eslint-disable-next-line
-}, [libraries, summaries]);
+  }, [libraries, summaries]);
+
+
+
+  useEffect(() => {
+
+    if (handles.length > 1 && scroll) {
+      scrollToList();
+    }
+
+  // eslint-disable-next-line
+  }, [games]);
 
 
 
@@ -135,7 +150,8 @@ function GameList(props) {
   }
 
   return (
-    <div>
+    <div ref={listRef}>
+      <br />
       <h4>Matched Games</h4>
       <div className="switch pref-multiplayerFlag" style={marginBottom} onClick={flagHandler}><span className="head"></span></div>
       <div className="label" style={marginBottom}>Multiplayer only</div>

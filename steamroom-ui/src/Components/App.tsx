@@ -20,6 +20,7 @@ const alignCenter = {
 function App() {
 
   const [handles, setHandles] = useState([] as string[]);
+  const [lastAction, setLastAction] = useState('');
 
   useEffect(() => {
 
@@ -33,6 +34,8 @@ function App() {
     }
 
   }, []);
+
+
 
   const clearCacheHandler = () => {
     const theme = localStorage.getItem("fluidTheme") as string;
@@ -59,6 +62,7 @@ function App() {
           const added = handles.concat(handle);
           localStorage.setItem("handles", JSON.stringify(added));
           setHandles(added);
+          setLastAction('add');
         } else {
           alert("User not found");
           return;
@@ -83,6 +87,7 @@ function App() {
       removed.splice(index, 1);
       localStorage.setItem("handles", JSON.stringify(removed));
       setHandles(removed);
+      setLastAction('remove');
     } else {
       alert("User not found");
     }
@@ -112,9 +117,7 @@ function App() {
       </div>
       <div className="section">
         <div className="body">
-          <br/>
-          <br/>
-          <GameList handles={handles} />
+          <GameList handles={handles} scroll={lastAction === 'add'} />
         </div>
       </div>
     </div>
