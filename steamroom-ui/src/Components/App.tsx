@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+
 import './../styles/app.css';
 
 import UserList from './userList';
 import UserAdd from './userAdd';
 import GameList from './gameList';
 import Theme from './theme';
+import Alert from './alert';
 
 import * as client from './../library-client';
 
@@ -29,6 +31,7 @@ function App() {
 
   const [handles, setHandles] = useState([] as string[]);
   const [lastAction, setLastAction] = useState('');
+  const [alertContent, setAlertContent] = useState('');
 
   useEffect(() => {
 
@@ -54,10 +57,12 @@ function App() {
     window.location.reload(false);
   }
 
+
+
   const addUserHandler = async (handle) => {
 
     if (handle === '') {
-      alert("Please enter a Steam user");
+      setAlertContent("Please enter a valid Steam user");
       return;
     }
 
@@ -72,12 +77,12 @@ function App() {
           setHandles(added);
           setLastAction('add');
         } else {
-          alert("User not found - is the profile public?");
+          setAlertContent("User not found - is the User's profile public?");
           return;
         }
       })();
     } else {
-      alert("User already added");
+      setAlertContent("User already added");
       return;
     }
   };
@@ -85,7 +90,7 @@ function App() {
   const removeUserHandler = async (handle) => {
 
     if (handle === '') {
-      alert("Username not provided");
+      setAlertContent("Username not provided");
       return;
     }
 
@@ -97,9 +102,13 @@ function App() {
       setHandles(removed);
       setLastAction('remove');
     } else {
-      alert("User to remove not found");
+      setAlertContent("User to remove not found");
     }
   };
+
+  const closeAlert = () => {
+    setAlertContent('');
+  }
 
   return (
     <div className="container">
@@ -131,8 +140,10 @@ function App() {
           <GameList handles={handles} scroll={lastAction === 'add'} />
         </div>
       </div>
+      <Alert content={alertContent} onClose={closeAlert} />
     </div>
   );
 }
+
 
 export default App;
