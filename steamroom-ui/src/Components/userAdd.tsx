@@ -24,9 +24,9 @@ function UserAdd(props) {
   useEffect(() => {
 
     if (handleCount > 0) {
-      setPrompt('Enter another Steam Username');
+      setPrompt('Enter another Steam User');
     } else {
-      setPrompt('Enter a Steam Username and press +');
+      setPrompt('Enter a Steam User and press +');
     }
 
 

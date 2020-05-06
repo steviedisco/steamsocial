@@ -16,6 +16,14 @@ const alignCenter = {
   textAlign: 'center'
 } as React.CSSProperties;
 
+const header = {
+  textAlign: 'center',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+  padding: '20px 0'
+} as React.CSSProperties;
+
 
 function App() {
 
@@ -99,12 +107,15 @@ function App() {
         <div className="body">
           <Theme />
         </div>
-        <div className="header">
+        <div style={header}>
           <h2>Steam Social</h2>
         </div>
         <div className="body">
           <p style={{ ...alignCenter, ...marginBottom }}>
             Compare Steam libraries to help organise online multiplayer sessions with your friends.
+          </p>
+          <p style={{ ...alignCenter, ...marginBottom }}>
+            To use the service, ensure the accounts you are comparing have both a public profile and a public games list.
           </p>
         </div>
       </div>
