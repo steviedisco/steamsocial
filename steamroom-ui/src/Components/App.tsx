@@ -95,7 +95,7 @@ function App() {
           <Theme />
         </div>
         <div className="header">
-          <h2>Steam Room</h2>
+          <h2>Steam Social</h2>
         </div>
         <div className="body">
           <p style={{ ...alignCenter, ...marginBottom }}>
