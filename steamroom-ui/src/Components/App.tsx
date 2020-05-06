@@ -57,7 +57,7 @@ function App() {
   const addUserHandler = async (handle) => {
 
     if (handle === '') {
-      alert("Please enter a Steam username");
+      alert("Please enter a Steam user");
       return;
     }
 
@@ -72,7 +72,7 @@ function App() {
           setHandles(added);
           setLastAction('add');
         } else {
-          alert("User not found");
+          alert("User not found - is the profile public?");
           return;
         }
       })();
@@ -97,7 +97,7 @@ function App() {
       setHandles(removed);
       setLastAction('remove');
     } else {
-      alert("User not found");
+      alert("User to remove not found");
     }
   };
 
