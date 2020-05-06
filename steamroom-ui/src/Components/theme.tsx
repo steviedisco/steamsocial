@@ -1,15 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './../styles/app.css';
 
-const themeButton = {
-  marginTop: '20px',
+const enabled = {
   display: 'block',
-} as React.CSSProperties;
-
-const themeBar = {
-  marginTop: '20px',
-  display: 'block',
-  textAlign: 'right'
+  textAlign: 'center'
 } as React.CSSProperties;
 
 const disabled = {
@@ -20,11 +14,12 @@ const disabled = {
 
 function Theme(props) {
 
-  const [themeStyle, setThemeStyle] = useState(disabled);
-  const [buttonStyle, setButtonStyle] = useState(themeButton);
-
+  const [themeStyle, setThemeStyle] = useState(enabled);
+  const [buttonStyle, setButtonStyle] = useState(disabled);
 
   useEffect(() => {
+
+    window["themeHandlerClient"] = showThemeHandler;
 
     const script = document.createElement('script');
 
@@ -33,10 +28,8 @@ function Theme(props) {
       var originalSetTheme = fluid.theme;
 
       fluid.theme = function(value) {
-        alert(value);
+        window["themeHandlerClient"]();
         originalSetTheme(value);
-
-        ${ showThemeHandler }();
       };
     `;
 
@@ -47,17 +40,18 @@ function Theme(props) {
 
 
 
-  const showThemeHandler = e => {
+  const showThemeHandler = () => {
     if (themeStyle === disabled) {
-      setThemeStyle(themeBar);
+      setThemeStyle(enabled);
       setButtonStyle(disabled);
     } else {
-      setButtonStyle(themeBar);
+      setButtonStyle(enabled);
       setThemeStyle(disabled);
     }
   }
 
   return (<>
+    <br/>
     <div className="btns row themeSelector" style={themeStyle}></div>
     <div className="btn" style={buttonStyle} onClick={showThemeHandler}>Change Theme</div>
   </>);
