@@ -42,7 +42,7 @@ function UserAdd(props) {
   }
 
 
-  const addHandle = e => {
+  const addHandle = () => {
 
     window["verifyRecaptcha"] = verifyRecaptcha;
 
@@ -52,7 +52,7 @@ function UserAdd(props) {
     script.innerHTML = `
       grecaptcha.ready(function(){
           grecaptcha.execute("6LfDq_MUAAAAAB_Kefr15OvioLopWcs2YELeXbP9", {action: 'homepage'}).then(function(token) {
-            window["verifyRecaptcha"](token, "${e.target.value}");
+            window["verifyRecaptcha"](token, "${handle}");
           });
       });
     `;
