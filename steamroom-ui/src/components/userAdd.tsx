@@ -66,9 +66,10 @@ function UserAdd(props) {
 
   const handleKeypress = e => {
     if (e.key === 'Enter' && e.target.value !== '') {
-      addHandle(e);
+      addHandle();
     }
   }
+  
 
   return (
     <div style={block}>

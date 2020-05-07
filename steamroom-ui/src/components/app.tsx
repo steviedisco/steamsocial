@@ -77,7 +77,7 @@ function App() {
           setHandles(added);
           setLastAction('add');
         } else {
-          setAlertContent("User not found - is the User's profile public?");
+          setAlertContent("User not found - is the user's profile public?");
           return;
         }
       })();
