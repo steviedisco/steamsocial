@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
+
 const block = {
   display: 'block',
 } as React.CSSProperties;
@@ -33,9 +34,30 @@ function UserAdd(props) {
   }, [handleCount]);
 
 
-  const addHandle = e => {
+  const verifyRecaptcha = (token, handle) => {
+    console.log(token, "<= your recaptcha token")
+
     addUserHandler(handle);
     setHandle('');
+  }
+
+
+  const addHandle = e => {
+
+    window["verifyRecaptcha"] = verifyRecaptcha;
+
+    const script = document.createElement('script');
+
+    script.type = "text/javascript"
+    script.innerHTML = `
+      grecaptcha.ready(function(){
+          grecaptcha.execute("6LfDq_MUAAAAAB_Kefr15OvioLopWcs2YELeXbP9", {action: 'homepage'}).then(function(token) {
+            window["verifyRecaptcha"](token, "${e.target.value}");
+          });
+      });
+    `;
+
+    document.body.appendChild(script);
   }
 
   const handleChange = e => {
@@ -44,8 +66,7 @@ function UserAdd(props) {
 
   const handleKeypress = e => {
     if (e.key === 'Enter' && e.target.value !== '') {
-      addUserHandler(e.target.value);
-      setHandle('');
+      addHandle(e);
     }
   }
 
