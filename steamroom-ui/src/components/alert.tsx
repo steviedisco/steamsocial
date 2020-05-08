@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import Popup from "reactjs-popup";
 import styled from 'styled-components';
 
@@ -6,7 +7,6 @@ import './../styles/app.css';
 
 
 const StyledPopup = styled(Popup)`
-  // use your custom style for ".popup-overlay"
   &-overlay {
    ...
   }
@@ -55,3 +55,8 @@ export default function Alert(props) {
     </div>
   );
 }
+
+Alert.propTypes = {
+  content: PropTypes.any.isRequired,
+  onClose: PropTypes.any.isRequired
+};

@@ -32,6 +32,7 @@ function App() {
   const [handles, setHandles] = useState([] as string[]);
   const [lastAction, setLastAction] = useState('');
   const [alertContent, setAlertContent] = useState('');
+  const [jwt, setJwt] = useState('');
 
   useEffect(() => {
 
@@ -59,17 +60,21 @@ function App() {
 
 
 
-  const addUserHandler = async (handle) => {
+  const addUserHandler = async (handle, token) => {
 
     if (handle === '') {
       setAlertContent("Please enter a valid Steam user");
       return;
     }
 
+    if (token !== '') {
+      setJwt(token);
+    }
+
     if (!handles.includes(handle)) {
 
       await (async () => {
-        const summary = await client.fetchSummary(handle);
+        const summary = await client.fetchSummary(handle, token);
 
         if (summary) {
           const added = handles.concat(handle);
@@ -130,14 +135,14 @@ function App() {
       </div>
       <div className="section">
         <div className="body">
-          <UserList handles={handles} removeUserHandler={removeUserHandler} />
+          <UserList handles={handles} removeUserHandler={removeUserHandler} token={jwt} />
           <UserAdd addUserHandler={addUserHandler} handleCount={handles.length} />
           { handles.length < 2 ? <></> : <div className="btn" style={marginBottom} onClick={clearCacheHandler}>Refresh</div> }
         </div>
       </div>
       <div className="section">
         <div className="body">
-          <GameList handles={handles} scroll={lastAction === 'add'} />
+          <GameList handles={handles} scroll={lastAction === 'add'} token={jwt} />
         </div>
       </div>
       <Alert content={alertContent} onClose={closeAlert} />

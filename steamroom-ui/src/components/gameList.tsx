@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
+
 import Game from './game';
 import * as client from './../library-client';
 
@@ -39,9 +41,9 @@ function PopulateList(props): any {
 
 
 
-function GameList(props) {
+export default function GameList(props) {
 
-  let { handles, scroll } = props;
+  let { handles, scroll, token } = props;
 
   const [games, setGames] = useState({} as any);
   const [libraries, setLibraries] = useState({} as any);
@@ -77,12 +79,12 @@ function GameList(props) {
 
   useEffect(() => {
 
-    client.getLibraries(handles)
+    client.getLibraries(handles, token)
       .then(libs => {
         setLibraries(libs)
       });
 
-    client.getSummaries(handles)
+    client.getSummaries(handles, token)
       .then(sums => {
         setSummaries(sums)
       });
@@ -140,7 +142,7 @@ function GameList(props) {
 
 
 
-  const flagHandler = (event) => {
+  const flagHandler = () => {
     const script = document.createElement('script');
     script.type = "text/javascript"
     script.innerHTML = `fluid.set("pref-multiplayerFlag", "${!multiplayerFlag}");`;
@@ -160,4 +162,8 @@ function GameList(props) {
   );
 }
 
-export default GameList;
+GameList.propTypes = {
+  handles: PropTypes.any.isRequired,
+  scroll: PropTypes.any.isRequired,
+  token: PropTypes.any.isRequired
+};

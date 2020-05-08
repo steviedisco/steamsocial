@@ -12,7 +12,7 @@ const disabled = {
 
 
 
-function Theme(props) {
+export default function Theme() {
 
   const [themeStyle, setThemeStyle] = useState(enabled);
   const [buttonStyle, setButtonStyle] = useState(disabled);
@@ -56,6 +56,3 @@ function Theme(props) {
     <div className="btn" style={buttonStyle} onClick={showThemeHandler}>Change Theme</div>
   </>);
 }
-
-
-export default Theme;

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 import * as client from './../library-client';
 
@@ -14,19 +15,20 @@ const pointer = {
 
 
 
-function UserList(props) {
+export default function UserList(props) {
 
-  let { handles, removeUserHandler } = props;
+  let { handles, removeUserHandler, token } = props;
 
   const [summaries, setSummaries] = useState({} as any);
 
   useEffect(() => {
 
-    client.getSummaries(handles)
+    client.getSummaries(handles, token)
       .then(sums => {
         setSummaries(sums)
       });
 
+  // eslint-disable-next-line
   }, [handles]);
 
   const removeHandle = handle => {
@@ -57,4 +59,8 @@ function UserList(props) {
   </div>);
 }
 
-export default UserList;
+UserList.propTypes = {
+  handles: PropTypes.any.isRequired,
+  removeUserHandler: PropTypes.any.isRequired,
+  token: PropTypes.any.isRequired,
+};

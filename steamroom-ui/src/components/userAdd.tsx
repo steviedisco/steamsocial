@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+import PropTypes from 'prop-types';
 const verifyCaptchaUrl = 'https://54z0aarbpc.execute-api.eu-west-1.amazonaws.com/default/verify_reCaptcha_Function';
 
 const block = {
@@ -16,7 +16,7 @@ const pointer = {
 
 
 
-function UserAdd(props) {
+export default function UserAdd(props) {
 
   let { addUserHandler, handleCount } = props;
 
@@ -133,4 +133,9 @@ function UserAdd(props) {
   );
 }
 
-export default UserAdd;
+
+
+UserAdd.propTypes = {
+  addUserHandler: PropTypes.any.isRequired,
+  handleCount: PropTypes.any.isRequired,
+};

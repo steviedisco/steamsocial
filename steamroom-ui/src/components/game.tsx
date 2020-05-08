@@ -1,5 +1,5 @@
 import React from 'react';
-
+import PropTypes from 'prop-types';
 
 const img = {
   float: 'left',
@@ -23,7 +23,7 @@ const users = {
 
 
 
-function Game(props) {
+export default function Game(props) {
 
   let { game } = props;
   const key = `img_${game.appID}`;
@@ -46,4 +46,6 @@ function Game(props) {
   );
 }
 
-export default Game;
+Game.propTypes = {
+  game: PropTypes.any.isRequired,
+};

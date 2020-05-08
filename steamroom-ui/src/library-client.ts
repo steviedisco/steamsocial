@@ -102,7 +102,7 @@ export const process = (libraries, summaries) => {
 
 
 
-const getUserId = async (handle: string): Promise<string> => {
+const getUserId = async (handle: string, token): Promise<string> => {
 
   const key = `${handle}_steamid`;
 
@@ -110,7 +110,13 @@ const getUserId = async (handle: string): Promise<string> => {
   if (cachedid != null && cachedid !== '')
     return JSON.parse(cachedid);
 
-  const response = await fetch(`${resolveUserUrl}?handle=${handle}`);
+  const response = await fetch(`${resolveUserUrl}?handle=${handle}`, {
+            method: 'GET',
+            headers: {
+                "Authentication": `Bearer ${token}`
+            }
+        });
+
   const steamid = await response.json();
 
   localStorage.setItem(key, JSON.stringify(steamid));
@@ -120,7 +126,7 @@ const getUserId = async (handle: string): Promise<string> => {
 
 
 
-const getGames = async (steamid, handle) => {
+const getGames = async (steamid, handle, token) => {
 
   const key = `${steamid}_games`;
 
@@ -131,7 +137,12 @@ const getGames = async (steamid, handle) => {
   const fetchGames = (steamid) => {
     return new Promise((resolve) => {
       (async () => {
-        await fetch(`${gamesListUrl}?steamid=${steamid}`)
+        await fetch(`${gamesListUrl}?steamid=${steamid}`, {
+                  method: 'GET',
+                  headers: {
+                      "Authentication": `Bearer ${token}`
+                  }
+              })
           .then(response => response.json())
           .then(response => {
             resolve(response)
@@ -154,14 +165,14 @@ const getGames = async (steamid, handle) => {
 }
 
 
-const fetchLibraries = async (handles) => {
+const fetchLibraries = async (handles, token) => {
 
-  const fetchLibrary = (handle) => {
+  const fetchLibrary = (handle, token) => {
     return new Promise((resolve) => {
       (async () => {
-        await getUserId(handle)
+        await getUserId(handle, token)
           .then(async steamid => {
-            await getGames(steamid, handle)
+            await getGames(steamid, handle, token)
               .then(games => {
                   resolve(games);
               })
@@ -170,7 +181,7 @@ const fetchLibraries = async (handles) => {
       });
   };
 
-  const fetchAll = () => {
+  const fetchAll = (token) => {
 
     return new Promise((resolve) => {
 
@@ -183,7 +194,7 @@ const fetchLibraries = async (handles) => {
           const handle = handles[i];
 
           await (async () => {
-            const library = await fetchLibrary(handle);
+            const library = await fetchLibrary(handle, token);
 
             if (library) {
               libs[handle] = library;
@@ -198,41 +209,41 @@ const fetchLibraries = async (handles) => {
     });
   };
 
-  const libraries = await fetchAll();
+  const libraries = await fetchAll(token);
   return libraries;
 };
 
 
-export const getLibraries = async (handles) => {
-  return await fetchLibraries(handles);
+export const getLibraries = async (handles, token) => {
+  return await fetchLibraries(handles, token);
 };
 
 
-export const getSummaries = async (handles) => {
-  return await fetchSummaries(handles);
+export const getSummaries = async (handles, token) => {
+  return await fetchSummaries(handles, token);
 };
 
 
-export const fetchSummary = (handle) => {
-  return new Promise((resolve, reject) => {
+export const fetchSummary = (handle, token) => {
+  return new Promise((resolve) => {
     (async () => {
-      await getUserId(handle)
+      await getUserId(handle, token)
         .then(async steamid => {
-          await getProfile(steamid)
+          await getProfile(steamid, token)
             .then(summary => {
                 resolve(summary);
             })
-            .catch(err => resolve(null));
+            .catch(() => resolve(null));
         })
-        .catch(err => resolve(null));
+        .catch(() => resolve(null));
       })();
     });
 };
 
 
-const fetchSummaries = async (handles) => {
+const fetchSummaries = async (handles, token) => {
 
-  const fetchAll = () => {
+  const fetchAll = (token) => {
 
     return new Promise((resolve) => {
 
@@ -245,7 +256,7 @@ const fetchSummaries = async (handles) => {
           const handle = handles[i];
 
           await (async () => {
-            const summary = await fetchSummary(handle);
+            const summary = await fetchSummary(handle, token);
 
             if (summary) {
               sums[handle] = summary;
@@ -260,12 +271,12 @@ const fetchSummaries = async (handles) => {
     });
   };
 
-  const summaries = await fetchAll();
+  const summaries = await fetchAll(token);
   return summaries;
 };
 
 
-const getProfile = async (steamid) => {
+const getProfile = async (steamid, token) => {
 
   const key = `${steamid}_profile`;
 
@@ -273,10 +284,15 @@ const getProfile = async (steamid) => {
   if (cachedprofiles != null && cachedprofiles !== '')
     return JSON.parse(cachedprofiles);
 
-  const fetchProfile = (steamid) => {
+  const fetchProfile = (steamid, token) => {
     return new Promise((resolve) => {
       (async () => {
-        await fetch(`${userSummaryUrl}?steamid=${steamid}`)
+        await fetch(`${userSummaryUrl}?steamid=${steamid}`, {
+                  method: 'GET',
+                  headers: {
+                      "Authentication": `Bearer ${token}`
+                  }
+              })
           .then(response => response.json())
           .then(response => {
             resolve(response)
@@ -289,7 +305,7 @@ const getProfile = async (steamid) => {
       });
   };
 
-  const profile = await fetchProfile(steamid);
+  const profile = await fetchProfile(steamid, token);
 
   if (profile) {
     localStorage.setItem(key, JSON.stringify(profile));
