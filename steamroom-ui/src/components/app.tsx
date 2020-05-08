@@ -42,6 +42,7 @@ function App() {
       const cachedHandles = JSON.parse(cacheValue) as string[];
       if (cachedHandles.length) {
 
+        window["verifyRecaptcha"] = client.verifyRecaptcha;
         window["setJwt"] = setJwt;
         window["setHandles"] = setHandles;
         window["cachedHandles"] = cachedHandles;
@@ -51,13 +52,15 @@ function App() {
         script.type = "text/javascript"
         script.innerHTML = `
           grecaptcha.ready(function(){
-              grecaptcha.execute("6LfDq_MUAAAAAB_Kefr15OvioLopWcs2YELeXbP9", {action: 'homepage'}).then(function(token) {
-                const jwt = window["verifyRecaptcha"](token);
+            grecaptcha.execute("6LfDq_MUAAAAAB_Kefr15OvioLopWcs2YELeXbP9", {action: 'homepage'}).then(function(token) {
+              window["verifyRecaptcha"](token, (jwt) => {
+                console.log(jwt);
                 if (jwt && jwt !== '') {
                   window["setHandles"](window["cachedHandles"]);
                   window["setJwt"](jwt);
                 }
-              });
+              })
+            })
           });
         `;
       }

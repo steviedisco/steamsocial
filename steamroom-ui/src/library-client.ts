@@ -1,5 +1,6 @@
 var _ = require('lodash');
 
+const verifyCaptchaUrl = 'https://54z0aarbpc.execute-api.eu-west-1.amazonaws.com/default/verify_reCaptcha_Function';
 const resolveUserUrl = 'https://9192zxrrp6.execute-api.eu-west-1.amazonaws.com/default/get_steamUserIdFromHandle_Function';
 const gamesListUrl = 'https://k14n0rcap5.execute-api.eu-west-1.amazonaws.com/default/get_userOwnedGames_Function';
 const userSummaryUrl = 'https://8ydkm187n9.execute-api.eu-west-1.amazonaws.com/default/get_userSummary_Function';
@@ -312,4 +313,22 @@ const getProfile = async (steamid, token) => {
   }
 
   return profile;
+}
+
+
+
+export const verifyRecaptcha = (token, callback) => {
+
+  fetch(`${verifyCaptchaUrl}`, {
+    method: 'POST',
+    body: JSON.stringify({ 'token': token })
+  })
+  .then(response => response.json())
+  .then(response => {
+    callback(response);
+  })
+  .catch(() => {
+    console.log(`Recaptcha verification failed`);
+  });
+
 }

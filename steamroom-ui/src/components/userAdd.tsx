@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-const verifyCaptchaUrl = 'https://54z0aarbpc.execute-api.eu-west-1.amazonaws.com/default/verify_reCaptcha_Function';
+
+import * as client from './../library-client';
 
 const block = {
   display: 'block',
@@ -37,38 +38,11 @@ export default function UserAdd(props) {
 
   useEffect(() => {
 
-    window["verifyRecaptcha"] = verifyRecaptcha;
+    window["verifyRecaptcha"] = client.verifyRecaptcha;
     window["addHandle"] = addHandle;
 
   // eslint-disable-next-line
   }, []);
-
-
-
-  const verifyRecaptcha = async (token) => {
-
-    const verify = (token): any => {
-      return new Promise((resolve) => {
-        (async () => {
-          await fetch(`${verifyCaptchaUrl}`, {
-              method: 'POST',
-              body: JSON.stringify({ 'token': token })
-            })
-            .then(response => response.json())
-            .then(response => {
-              resolve(response)
-            })
-            .catch(() => {
-              console.log(`Recaptcha verification failed`);
-              resolve('');
-            });
-          })();
-        });
-      };
-
-    const response = await verify(token);
-    return JSON.parse(JSON.stringify(response));
-  }
 
 
 
@@ -94,15 +68,17 @@ export default function UserAdd(props) {
 
     const script = document.createElement('script');
 
-    script.type = "text/javascript"
+    script.type = "text/javascript";
     script.innerHTML = `
       grecaptcha.ready(function(){
-          grecaptcha.execute("6LfDq_MUAAAAAB_Kefr15OvioLopWcs2YELeXbP9", {action: 'homepage'}).then(function(token) {
-            const jwt = window["verifyRecaptcha"](token);
+        grecaptcha.execute("6LfDq_MUAAAAAB_Kefr15OvioLopWcs2YELeXbP9", {action: 'homepage'}).then(function(token) {
+          window["verifyRecaptcha"](token, (jwt) => {
+            console.log(jwt);
             if (jwt && jwt !== '') {
               window["addHandle"]('${handle}', jwt);
             }
-          });
+          })
+        })
       });
     `;
 
