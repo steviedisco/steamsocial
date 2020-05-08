@@ -73,7 +73,6 @@ export default function UserAdd(props) {
       grecaptcha.ready(function(){
         grecaptcha.execute("6LfDq_MUAAAAAB_Kefr15OvioLopWcs2YELeXbP9", {action: 'homepage'}).then(function(token) {
           window["verifyRecaptcha"](token, (jwt) => {
-            console.log(jwt);
             if (jwt && jwt !== '') {
               window["addHandle"]('${handle}', jwt);
             }
