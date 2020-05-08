@@ -113,7 +113,7 @@ const getUserId = async (handle: string, token): Promise<string> => {
   const response = await fetch(`${resolveUserUrl}?handle=${handle}`, {
             method: 'GET',
             headers: {
-                "Authentication": `Bearer ${token}`
+                "Authorization": `Bearer ${token}`
             }
         });
 
@@ -140,7 +140,7 @@ const getGames = async (steamid, handle, token) => {
         await fetch(`${gamesListUrl}?steamid=${steamid}`, {
                   method: 'GET',
                   headers: {
-                      "Authentication": `Bearer ${token}`
+                      "Authorization": `Bearer ${token}`
                   }
               })
           .then(response => response.json())
@@ -290,7 +290,7 @@ const getProfile = async (steamid, token) => {
         await fetch(`${userSummaryUrl}?steamid=${steamid}`, {
                   method: 'GET',
                   headers: {
-                      "Authentication": `Bearer ${token}`
+                      "Authorization": `Bearer ${token}`
                   }
               })
           .then(response => response.json())
