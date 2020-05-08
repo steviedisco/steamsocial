@@ -23,13 +23,17 @@ export default function UserList(props) {
 
   useEffect(() => {
 
+    if (!token || token === '') {
+      return;
+    }
+
     client.getSummaries(handles, token)
       .then(sums => {
         setSummaries(sums)
       });
 
   // eslint-disable-next-line
-  }, [handles]);
+}, [handles, token]);
 
   const removeHandle = handle => {
     removeUserHandler(handle);

@@ -79,6 +79,10 @@ export default function GameList(props) {
 
   useEffect(() => {
 
+    if (!token || token === '') {
+      return;
+    }
+
     client.getLibraries(handles, token)
       .then(libs => {
         setLibraries(libs)
@@ -95,7 +99,7 @@ export default function GameList(props) {
     document.body.appendChild(script);
 
     // eslint-disable-next-line
-  }, [handles]);
+  }, [handles, token]);
 
 
 
