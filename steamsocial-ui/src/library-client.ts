@@ -132,8 +132,14 @@ const getGames = async (steamid, handle, token) => {
   const key = `${steamid}_games`;
 
   const cachedgames = localStorage.getItem(key);
-  if (cachedgames != null && cachedgames !== '')
-    return JSON.parse(cachedgames);
+  if (cachedgames && cachedgames !== undefined && cachedgames !== '') {
+    try {
+       return JSON.parse(cachedgames);
+    }
+    catch {
+      return null;
+    }
+  }
 
   const fetchGames = (steamid) => {
     return new Promise((resolve) => {

@@ -54,7 +54,7 @@ export default function UserList(props) {
                 <input className="inputIcon" value={user.nickname} disabled={true}
                   ref={(node) => {
                    if (node) {
-                     node.style.setProperty("max-width", "300px", "important");
+                     node.style.setProperty("max-width", "290px", "important");
                    }
                  }} />
                  <img src={user.avatar.medium}
