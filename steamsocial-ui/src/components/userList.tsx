@@ -13,6 +13,15 @@ const pointer = {
   cursor: 'pointer'
 } as React.CSSProperties;
 
+const userimg = {
+  position: 'absolute',
+  left: '360px',
+  marginTop: '9px',
+} as React.CSSProperties;
+
+const input = {
+  maxWidth: '350px',
+} as React.CSSProperties;
 
 
 export default function UserList(props) {
@@ -51,7 +60,12 @@ export default function UserList(props) {
           return (<div key={`user_${user.nickname}`}>
               <div style={block}>
                 <i className="inputIcon material-icons" style={pointer} onClick={() => removeHandle(handle)}>remove_circle</i>
-                <input  className="inputIcon" value={user.nickname} disabled={true} />
+                <img src={user.avatar.medium}
+                     title={user.nickname}
+                     style={userimg}
+                     width="30"
+                     height="30" />
+                <input className="inputIcon" value={user.nickname} disabled={true} style={input} />
               </div>
             </div>
           );

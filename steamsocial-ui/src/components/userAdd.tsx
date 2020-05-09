@@ -15,6 +15,9 @@ const pointer = {
   cursor: 'pointer'
 } as React.CSSProperties;
 
+const input = {
+  maxWidth: '350px',
+} as React.CSSProperties;
 
 
 export default function UserAdd(props) {
@@ -102,7 +105,7 @@ export default function UserAdd(props) {
     <div style={block}>
       <div style={inline}>
         <i className="inputIcon material-icons" style={pointer} onClick={tryAddHandle}>add_circle</i>
-        <input className="inputIcon" placeholder={prompt} value={handle} onChange={handleChange} onKeyPress={handleKeypress} />
+        <input className="inputIcon" placeholder={prompt} value={handle} onChange={handleChange} onKeyPress={handleKeypress} style={input} />
       </div>
     </div>
   );

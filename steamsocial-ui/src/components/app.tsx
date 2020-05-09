@@ -26,6 +26,10 @@ const header = {
   padding: '20px 0'
 } as React.CSSProperties;
 
+const input = {
+  maxWidth: '350px',
+  marginBottom: '60px'
+} as React.CSSProperties;
 
 function App() {
 
@@ -159,7 +163,7 @@ function App() {
         <div className="body">
           <UserList handles={handles} removeUserHandler={removeUserHandler} token={jwt} />
           <UserAdd addUserHandler={addUserHandler} handleCount={handles.length} />
-          { handles.length < 2 ? <></> : <div className="btn" style={marginBottom} onClick={clearCacheHandler}>Refresh</div> }
+          { handles.length < 2 ? <></> : <div className="btn" style={input} onClick={clearCacheHandler}>Refresh</div> }
         </div>
       </div>
       <div className="section">

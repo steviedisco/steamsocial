@@ -51,8 +51,19 @@ export default function GameList(props) {
   const [multiplayerFlag, setMultiplayerFlag] = useState(true);
 
   const listRef = useRef(null);
-  const scrollToRef = (ref) => ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  const scrollToList = () => scrollToRef(listRef);
+
+  const scrollToRef = (ref) => {
+    if (ref.current) {
+
+      ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  const scrollToList = () => {
+    if (listRef) {
+      scrollToRef(listRef)
+    }
+  };
 
   const ensureData = () => {
     if (!libraries) {
@@ -93,14 +104,8 @@ export default function GameList(props) {
         setSummaries(sums)
       });
 
-    const script = document.createElement('script');
-    script.type = "text/javascript"
-    script.innerHTML = `fluid.set("pref-multiplayerFlag", "${multiplayerFlag}");`;
-    document.body.appendChild(script);
-
-    // eslint-disable-next-line
+  // eslint-disable-next-line
   }, [handles, token]);
-
 
 
   useEffect(() => {
@@ -134,7 +139,6 @@ export default function GameList(props) {
 
 
 
-
   if (handles.length < 2) {
     return null;
   }
@@ -147,19 +151,16 @@ export default function GameList(props) {
 
 
   const flagHandler = () => {
-    const script = document.createElement('script');
-    script.type = "text/javascript"
-    script.innerHTML = `fluid.set("pref-multiplayerFlag", "${!multiplayerFlag}");`;
-    document.body.appendChild(script);
-
     setMultiplayerFlag(!multiplayerFlag);
   }
+
+
 
   return (
     <div ref={listRef}>
       <br />
       <h4>Matched Games</h4>
-      <div className="switch pref-multiplayerFlag" style={marginBottom} onClick={flagHandler}><span className="head"></span></div>
+      <div className={`switch ${multiplayerFlag ? 'active' : ''}`} style={marginBottom} onClick={flagHandler}><span className="head"></span></div>
       <div className="label" style={marginBottom}>Multiplayer only</div>
       <PopulateList games={games} multiplayerOnly={multiplayerFlag} />
     </div>
