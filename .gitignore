@@ -1,4 +1,4 @@
-/steamroom-ui/dist
+/steamsocial-ui/dist
 node_modules
 /build
 /*.log
