@@ -51,24 +51,24 @@ export default function UserList(props) {
           return (<div key={`user_${user.nickname}`}>
               <div style={block}>
                 <i className="inputIcon material-icons" style={pointer} onClick={() => removeHandle(handle)}>remove_circle</i>
-                <img src={user.avatar.medium}
-                     alt=""
-                     title={user.nickname}
-                     width="30"
-                     height="30"
-                     ref={(node) => {
-                      if (node) {
-                        node.style.setProperty("position", "absolute");
-                        node.style.setProperty("margin-top", "9px");
-                        node.style.setProperty("left", "310px", "important");
-                      }
-                    }} />
                 <input className="inputIcon" value={user.nickname} disabled={true}
                   ref={(node) => {
                    if (node) {
                      node.style.setProperty("max-width", "300px", "important");
                    }
                  }} />
+                 <img src={user.avatar.medium}
+                      alt=""
+                      title={user.nickname}
+                      width="30"
+                      height="30"
+                      ref={(node) => {
+                       if (node) {
+                         node.style.setProperty("position", "relative");
+                         node.style.setProperty("top", "10px");
+                         node.style.setProperty("margin-left", "10px");
+                       }
+                     }} />
               </div>
             </div>
           );
