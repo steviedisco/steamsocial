@@ -16,7 +16,7 @@ const pointer = {
 } as React.CSSProperties;
 
 const input = {
-  maxWidth: '350px',
+  maxWidth: '300px',
 } as React.CSSProperties;
 
 

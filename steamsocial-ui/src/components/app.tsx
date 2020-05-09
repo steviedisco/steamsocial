@@ -27,7 +27,7 @@ const header = {
 } as React.CSSProperties;
 
 const input = {
-  maxWidth: '350px',
+  maxWidth: '300px',
   marginBottom: '60px'
 } as React.CSSProperties;
 
