@@ -26,10 +26,7 @@ const header = {
   padding: '20px 0'
 } as React.CSSProperties;
 
-const input = {
-  maxWidth: '300px',
-  marginBottom: '60px'
-} as React.CSSProperties;
+
 
 function App() {
 
@@ -141,6 +138,17 @@ function App() {
     setAlertContent('');
   }
 
+
+  const clearCacheButton =
+      <div className="btn"
+        onClick={clearCacheHandler}
+        ref={(node) => {
+        if (node) {
+          node.style.setProperty("max-width", "350px", "important");
+          node.style.setProperty("margin-bottom", "60px");
+        }}}>Refresh</div>
+
+
   return (
     <div className="container">
       <div className="section">
@@ -163,7 +171,7 @@ function App() {
         <div className="body">
           <UserList handles={handles} removeUserHandler={removeUserHandler} token={jwt} />
           <UserAdd addUserHandler={addUserHandler} handleCount={handles.length} />
-          { handles.length < 2 ? <></> : <div className="btn" style={input} onClick={clearCacheHandler}>Refresh</div> }
+          { handles.length < 2 ? <></> : clearCacheButton }
         </div>
       </div>
       <div className="section">

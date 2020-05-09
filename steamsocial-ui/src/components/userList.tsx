@@ -13,15 +13,6 @@ const pointer = {
   cursor: 'pointer'
 } as React.CSSProperties;
 
-const userimg = {
-  position: 'absolute',
-  left: '260px',
-  marginTop: '9px',
-} as React.CSSProperties;
-
-const input = {
-  maxWidth: '250px',
-} as React.CSSProperties;
 
 
 export default function UserList(props) {
@@ -63,10 +54,21 @@ export default function UserList(props) {
                 <img src={user.avatar.medium}
                      alt=""
                      title={user.nickname}
-                     style={userimg}
                      width="30"
-                     height="30" />
-                <input className="inputIcon" value={user.nickname} disabled={true} style={input} />
+                     height="30"
+                     ref={(node) => {
+                      if (node) {
+                        node.style.setProperty("position", "absolute");
+                        node.style.setProperty("margin-top", "9px");
+                        node.style.setProperty("left", "360px", "important");
+                      }
+                    }} />
+                <input className="inputIcon" value={user.nickname} disabled={true}
+                  ref={(node) => {
+                   if (node) {
+                     node.style.setProperty("max-width", "350px", "important");
+                   }
+                 }} />
               </div>
             </div>
           );
