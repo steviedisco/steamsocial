@@ -15,12 +15,12 @@ const pointer = {
 
 const userimg = {
   position: 'absolute',
-  left: '310px',
+  left: '260px',
   marginTop: '9px',
 } as React.CSSProperties;
 
 const input = {
-  maxWidth: '300px',
+  maxWidth: '250px',
 } as React.CSSProperties;
 
 
