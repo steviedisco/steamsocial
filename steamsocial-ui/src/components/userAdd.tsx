@@ -104,7 +104,7 @@ export default function UserAdd(props) {
         <input className="inputIcon" placeholder={prompt} value={handle} onChange={handleChange} onKeyPress={handleKeypress}
           ref={(node) => {
              if (node) {
-               node.style.setProperty("max-width", "350px", "important");
+               node.style.setProperty("max-width", "300px", "important");
              }
            }} />
       </div>

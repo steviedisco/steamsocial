@@ -60,13 +60,13 @@ export default function UserList(props) {
                       if (node) {
                         node.style.setProperty("position", "absolute");
                         node.style.setProperty("margin-top", "9px");
-                        node.style.setProperty("left", "360px", "important");
+                        node.style.setProperty("left", "310px", "important");
                       }
                     }} />
                 <input className="inputIcon" value={user.nickname} disabled={true}
                   ref={(node) => {
                    if (node) {
-                     node.style.setProperty("max-width", "350px", "important");
+                     node.style.setProperty("max-width", "300px", "important");
                    }
                  }} />
               </div>

@@ -144,7 +144,7 @@ function App() {
         onClick={clearCacheHandler}
         ref={(node) => {
         if (node) {
-          node.style.setProperty("max-width", "350px", "important");
+          node.style.setProperty("max-width", "300px", "important");
           node.style.setProperty("margin-bottom", "60px");
         }}}>Refresh</div>
 
