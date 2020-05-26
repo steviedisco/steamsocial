@@ -11,7 +11,7 @@ import Alert from './alert';
 import * as client from './../library-client';
 
 const marginBottom = {
-  marginBottom: '60px'
+  marginBottom: '40px'
 } as React.CSSProperties;
 
 const alignCenter = {
@@ -159,12 +159,13 @@ function App() {
           <h2>Steam Social</h2>
         </div>
         <div className="body">
-          <p style={{ ...alignCenter, ...marginBottom }}>
+          <p style={marginBottom}>
             Compare Steam libraries to help organise online multiplayer sessions with your friends.
           </p>
-          <p style={{ ...alignCenter, ...marginBottom }}>
+          <p style={marginBottom}>
             To use the service, ensure the accounts you are comparing have both a public profile and a public games list.
-          </p>
+            </p>
+
         </div>
       </div>
       <div className="section">
@@ -177,6 +178,21 @@ function App() {
       <div className="section">
         <div className="body">
           <GameList handles={handles} scroll={lastAction === 'add'} token={jwt} />
+        </div>
+      </div>
+      <div className="section">
+        <div className="body">
+        <p style={marginBottom}>
+          If you find this service useful, please consider donating a coffee.<br/><br/>
+          <div style={alignCenter}>
+            <a href='https://ko-fi.com/steviedisco' target='_new'>https://ko-fi.com/steviedisco</a>
+          </div>
+          <br/>
+        </p>
+          <div style={alignCenter}>
+            <br/><br/>
+            <a href='/privacypolicy.html' target='_new'>Privacy policy</a>
+          </div>
         </div>
       </div>
       <Alert content={alertContent} onClose={closeAlert} />

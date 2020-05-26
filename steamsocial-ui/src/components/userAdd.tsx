@@ -21,15 +21,15 @@ export default function UserAdd(props) {
   let { addUserHandler, handleCount } = props;
 
   const [handle, setHandle] = useState('');
-  const [prompt, setPrompt] = useState('Enter a Steam Username and press +');
+  const [prompt, setPrompt] = useState('Enter a Steam profile name and press +');
   const [jwt, setJwt] = useState('');
 
   useEffect(() => {
 
     if (handleCount > 0) {
-      setPrompt('Enter another Steam User');
+      setPrompt('Enter another Steam profile name');
     } else {
-      setPrompt('Enter a Steam User and press +');
+      setPrompt('Enter a Steam profile name and press +');
     }
 
   }, [handleCount]);
