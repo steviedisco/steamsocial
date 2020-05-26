@@ -163,15 +163,21 @@ function App() {
             Compare Steam libraries to help organise online multiplayer sessions with your friends.
           </p>
           <p style={marginBottom}>
-            To use the service, ensure the accounts you are comparing have both a public profile and a public games list.
-            </p>
-
+            If you find this service useful, please consider donating a coffee.<br/><br/>
+            <div style={alignCenter}>
+              <a href='https://ko-fi.com/steviedisco' target='_new'>https://ko-fi.com/steviedisco</a>
+            </div>
+            <br/>
+          </p>
         </div>
       </div>
       <div className="section">
         <div className="body">
           <UserList handles={handles} removeUserHandler={removeUserHandler} token={jwt} />
           <UserAdd addUserHandler={addUserHandler} handleCount={handles.length} />
+          <p style={marginBottom}>
+            Ensure the accounts you are comparing have both a public profile and a public games list.
+          </p>
           { handles.length < 2 ? <></> : clearCacheButton }
         </div>
       </div>
@@ -182,13 +188,6 @@ function App() {
       </div>
       <div className="section">
         <div className="body">
-        <p style={marginBottom}>
-          If you find this service useful, please consider donating a coffee.<br/><br/>
-          <div style={alignCenter}>
-            <a href='https://ko-fi.com/steviedisco' target='_new'>https://ko-fi.com/steviedisco</a>
-          </div>
-          <br/>
-        </p>
           <div style={alignCenter}>
             <br/><br/>
             <a href='/privacypolicy.html' target='_new'>Privacy policy</a>
