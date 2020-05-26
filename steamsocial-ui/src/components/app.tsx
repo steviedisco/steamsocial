@@ -163,9 +163,9 @@ function App() {
             Compare Steam libraries to help organise online multiplayer sessions with your friends.
           </p>
           <p style={marginBottom}>
-            If you find this service useful, please consider donating a coffee.<br/><br/>
+            If you find the service useful, please consider supporting me on ko-fi.<br/><br/>
             <div style={alignCenter}>
-              <a href='https://ko-fi.com/steviedisco' target='_new'>https://ko-fi.com/steviedisco</a>
+              <a href='https://ko-fi.com/Q5Q61R4DM' target='_new'><img height='36' style={{border:'0px', height:'36px'}} src='https://cdn.ko-fi.com/cdn/kofi3.png?v=2'  alt='Buy Me a Coffee at ko-fi.com' /></a>
             </div>
             <br/>
           </p>
