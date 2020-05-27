@@ -188,6 +188,10 @@ function App() {
       </div>
       <div className="section">
         <div className="body">
+          <div>
+            <br/><br/>
+            Please send bug reports and feature requests to <a href='mailto:steve@steviedis.co'>steve@steviedis.co</a>
+          </div>
           <div style={alignCenter}>
             <br/><br/>
             <a href='/privacypolicy.html' target='_new'>Privacy policy</a>
