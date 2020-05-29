@@ -4,7 +4,7 @@ const verifyCaptchaUrl = 'https://54z0aarbpc.execute-api.eu-west-1.amazonaws.com
 const resolveUserUrl = 'https://9192zxrrp6.execute-api.eu-west-1.amazonaws.com/default/get_steamUserIdFromHandle_Function';
 const gamesListUrl = 'https://k14n0rcap5.execute-api.eu-west-1.amazonaws.com/default/get_userOwnedGames_Function';
 const userSummaryUrl = 'https://8ydkm187n9.execute-api.eu-west-1.amazonaws.com/default/get_userSummary_Function';
-
+const friendListUrl = ' https://nuxq04drl5.execute-api.eu-west-1.amazonaws.com/default/get_userFriendList_Function';
 
 export const process = (libraries, summaries) => {
 
@@ -102,8 +102,7 @@ export const process = (libraries, summaries) => {
 }
 
 
-
-const getUserId = async (handle: string, token): Promise<string> => {
+const getUserId = async (handle, token) => {
 
   const key = `${handle}_steamid`;
 
@@ -124,7 +123,6 @@ const getUserId = async (handle: string, token): Promise<string> => {
 
   return steamid;
 }
-
 
 
 const getGames = async (steamid, handle, token) => {
@@ -169,6 +167,51 @@ const getGames = async (steamid, handle, token) => {
   }
 
   return games;
+}
+
+
+export const getFriends = async (steamid, handle, token) => {
+
+  const key = `${steamid}_friends`;
+
+  const cachedfriends = localStorage.getItem(key);
+  if (cachedfriends && cachedfriends !== undefined && cachedfriends !== '') {
+    try {
+       return JSON.parse(cachedfriends);
+    }
+    catch {
+      return null;
+    }
+  }
+
+  const fetchFriends = (steamid) => {
+    return new Promise((resolve) => {
+      (async () => {
+        await fetch(`${friendListUrl}?steamid=${steamid}`, {
+                  method: 'GET',
+                  headers: {
+                      "Authorization": `Bearer ${token}`
+                  }
+              })
+          .then(response => response.json())
+          .then(response => {
+            resolve(response)
+          })
+          .catch(() => {
+            alert(`Friend list fetch failed for ${handle}.`);
+            resolve(null);
+          });
+        })();
+      });
+  };
+
+  const friends = await fetchFriends(steamid);
+
+  if (friends) {
+    localStorage.setItem(key, JSON.stringify(friends));
+  }
+
+  return friends;
 }
 
 
@@ -239,6 +282,23 @@ export const fetchSummary = (handle, token) => {
           await getProfile(steamid, token)
             .then(summary => {
                 resolve(summary);
+            })
+            .catch(() => resolve(null));
+        })
+        .catch(() => resolve(null));
+      })();
+    });
+};
+
+
+export const fetchFriends = (handle, token) => {
+  return new Promise((resolve) => {
+    (async () => {
+      await getUserId(handle, token)
+        .then(async steamid => {
+          await getFriends(steamid, handle, token)
+            .then(summaries => {
+                resolve(summaries);
             })
             .catch(() => resolve(null));
         })
@@ -320,7 +380,6 @@ const getProfile = async (steamid, token) => {
 
   return profile;
 }
-
 
 
 export const verifyRecaptcha = (token, callback) => {

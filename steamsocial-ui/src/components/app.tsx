@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import './../styles/app.css';
 
 import UserList from './userList';
-import UserAdd from './userAdd';
+import UserCheck from './userCheck';
 import GameList from './gameList';
 import Theme from './theme';
 import Alert from './alert';
@@ -31,6 +31,7 @@ const header = {
 function App() {
 
   const [handles, setHandles] = useState([] as string[]);
+  const [mainUser, setMainUser] = useState('');
   const [lastAction, setLastAction] = useState('');
   const [alertContent, setAlertContent] = useState('');
   const [jwt, setJwt] = useState('');
@@ -82,6 +83,38 @@ function App() {
   }
 
 
+  const userHandler = async (handle, token) => {
+
+    if (handle === '') {
+      setAlertContent("Please enter a valid Steam user");
+      return;
+    }
+
+    if (token !== '') {
+      setJwt(token);
+    }
+
+    if (!handles.includes(handle)) {
+
+      await (async () => {
+        const summary = await client.fetchSummary(handle, token);
+
+        if (summary) {
+          setMainUser(handle);
+          const added = [].concat(handle);
+          setHandles(added);
+          setLastAction('add');
+        } else {
+          setAlertContent("User not found - is your profile public?");
+          return;
+        }
+      })();
+    } else {
+      setAlertContent("User already added");
+      return;
+    }
+  };
+
 
   const addUserHandler = async (handle, token) => {
 
@@ -104,6 +137,9 @@ function App() {
           localStorage.setItem("handles", JSON.stringify(added));
           setHandles(added);
           setLastAction('add');
+          if (added.length === 1) {
+            setMainUser(handle);
+          }
         } else {
           setAlertContent("User not found - is the user's profile public?");
           return;
@@ -173,12 +209,12 @@ function App() {
       </div>
       <div className="section">
         <div className="body">
-          <UserList handles={handles} removeUserHandler={removeUserHandler} token={jwt} />
-          <UserAdd addUserHandler={addUserHandler} handleCount={handles.length} />
           <p style={marginBottom}>
             Ensure the accounts you are comparing have both a public profile and a public games list.
           </p>
+          <UserCheck userHandler={userHandler} />
           { handles.length < 2 ? <></> : clearCacheButton }
+          <UserList mainUser={mainUser} handles={handles} addUserHandler={addUserHandler} removeUserHandler={removeUserHandler} token={jwt} />
         </div>
       </div>
       <div className="section">

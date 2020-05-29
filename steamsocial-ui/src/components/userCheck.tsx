@@ -16,52 +16,42 @@ const pointer = {
 } as React.CSSProperties;
 
 
-export default function UserAdd(props) {
+export default function UserCheck(props) {
 
-  let { addUserHandler, handleCount } = props;
+  let { userHandler } = props;
 
+  const prompt = 'Enter your Steam profile name';
   const [handle, setHandle] = useState('');
-  const [prompt, setPrompt] = useState('Enter a Steam profile name and press +');
   const [jwt, setJwt] = useState('');
-
-  useEffect(() => {
-
-    if (handleCount > 0) {
-      setPrompt('Enter another Steam profile name');
-    } else {
-      setPrompt('Enter a Steam profile name and press +');
-    }
-
-  }, [handleCount]);
 
 
   useEffect(() => {
 
     window["verifyRecaptcha"] = client.verifyRecaptcha;
-    window["addHandle"] = addHandle;
+    window["checkUser"] = checkUser;
 
   // eslint-disable-next-line
   }, []);
 
 
 
-  const addHandle = (handle, jwt) => {
-    addUserHandler(handle, jwt);
+  const checkUser = (handle, jwt) => {
+    userHandler(handle, jwt);
     setJwt(jwt);
     setHandle('');
   }
 
 
 
-  const tryAddHandle = () => {
+  const tryCheckUser = () => {
 
     if (handle === '') {
-      addUserHandler('', '');
+      userHandler('', '');
       return;
     }
 
     if (jwt && jwt !== '') {
-      addHandle(handle, jwt);
+      checkUser(handle, jwt);
       return;
     }
 
@@ -73,7 +63,7 @@ export default function UserAdd(props) {
         grecaptcha.execute("6LfDq_MUAAAAAB_Kefr15OvioLopWcs2YELeXbP9", {action: 'homepage'}).then(function(token) {
           window["verifyRecaptcha"](token, (jwt) => {
             if (jwt && jwt !== '') {
-              window["addHandle"]('${handle}', jwt);
+              window["checkUser"]('${handle}', jwt);
             }
           })
         })
@@ -91,22 +81,23 @@ export default function UserAdd(props) {
 
   const handleKeypress = e => {
     if (e.key === 'Enter') {
-      tryAddHandle();
+      tryCheckUser();
     }
   }
-
 
 
   return (
     <div style={block}>
       <div style={inline}>
-        <i className="inputIcon material-icons" style={pointer} onClick={tryAddHandle}>add_circle</i>
-        <input className="inputIcon" placeholder={prompt} value={handle} onChange={handleChange} onKeyPress={handleKeypress}
+        <input placeholder={prompt} value={handle} onChange={handleChange} onKeyPress={handleKeypress}
           ref={(node) => {
              if (node) {
                node.style.setProperty("max-width", "300px", "important");
              }
            }} />
+         <div className="btn" onClick={tryCheckUser}>
+           <i className="material-icons" style={pointer}>group_add</i>
+         </div>
       </div>
     </div>
   );
@@ -114,7 +105,6 @@ export default function UserAdd(props) {
 
 
 
-UserAdd.propTypes = {
-  addUserHandler: PropTypes.any.isRequired,
-  handleCount: PropTypes.any.isRequired,
+UserCheck.propTypes = {
+  userHandler: PropTypes.any.isRequired,
 };

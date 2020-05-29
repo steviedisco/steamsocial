@@ -9,15 +9,11 @@ const block = {
   display: 'block',
 } as React.CSSProperties;
 
-const pointer = {
-  cursor: 'pointer'
-} as React.CSSProperties;
-
 
 
 export default function UserList(props) {
 
-  let { handles, removeUserHandler, token } = props;
+  let { mainUser, handles, addUserHandler, removeUserHandler, token } = props;
 
   const [summaries, setSummaries] = useState({} as any);
 
@@ -27,16 +23,20 @@ export default function UserList(props) {
       return;
     }
 
-    client.getSummaries(handles, token)
+    client.fetchFriends(mainUser, token)
       .then(sums => {
         setSummaries(sums)
       });
 
   // eslint-disable-next-line
-}, [handles, token]);
+}, [mainUser, token]);
 
-  const removeHandle = handle => {
-    removeUserHandler(handle);
+  const toggleFriend = handle => event => {
+    if (event.target.value) {
+      addUserHandler(handle);
+    } else {
+      removeUserHandler(handle);
+    }
   }
 
   if (!Object.keys(summaries)) {
@@ -50,8 +50,8 @@ export default function UserList(props) {
         if (user) {
           return (<div key={`user_${user.nickname}`}>
               <div style={block}>
-                <i className="inputIcon material-icons" style={pointer} onClick={() => removeHandle(handle)}>remove_circle</i>
-                <input className="inputIcon" value={user.nickname} disabled={true}
+                <input type="checkbox" onClick={() => toggleFriend(handle)} />
+                <input value={user.nickname} disabled={true}
                   ref={(node) => {
                    if (node) {
                      node.style.setProperty("max-width", "290px", "important");
@@ -81,7 +81,9 @@ export default function UserList(props) {
 }
 
 UserList.propTypes = {
+  mainUser: PropTypes.any.isRequired,
   handles: PropTypes.any.isRequired,
+  addUserHandler: PropTypes.any.isRequired,
   removeUserHandler: PropTypes.any.isRequired,
   token: PropTypes.any.isRequired,
 };
