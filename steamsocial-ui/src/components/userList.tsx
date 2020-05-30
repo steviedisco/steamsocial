@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import * as client from './../library-client';
@@ -14,6 +14,28 @@ export default function UserList(props) {
   let { mainUser, addUserHandler, handles, removeUserHandler, token, waitingFunc } = props;
 
   const [summaries, setSummaries] = useState({} as any);
+
+  const listRef = useRef(null);
+
+  const scrollToRef = (ref) => {
+    if (ref.current) {
+      ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  const scrollToList = () => {
+    if (listRef) {
+      scrollToRef(listRef)
+    }
+  };
+
+
+  useEffect(() => {
+    if (summaries.length > 1) {
+      scrollToList();
+    }
+  // eslint-disable-next-line
+  }, [summaries]);
 
 
   useEffect(() => {
@@ -46,7 +68,7 @@ export default function UserList(props) {
     return null;
   }
 
-  return (<div style={block}>
+  return (<div style={block} ref={listRef}>
     <p style={{fontSize:'18px', marginLeft: '10px', paddingTop: '20px'}}>Select friends to compare</p>
     <div className="list select multiple" style={{
       maxWidth: '300px', marginLeft: '5px', marginBottom: '20px'}}>

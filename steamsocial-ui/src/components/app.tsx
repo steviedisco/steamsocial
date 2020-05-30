@@ -41,7 +41,7 @@ function App() {
   useEffect(() => {
 
     const mainUserCache = localStorage.getItem("mainUser")
-    const handleCache = localStorage.getItem("handles")
+    // const handleCache = localStorage.getItem("handles")
 
     if (mainUserCache && mainUserCache !== '') {
 
@@ -51,10 +51,10 @@ function App() {
       window["setHandles"] = setHandles;
       window["mainUser"] = mainUserCache;
 
-      if (handleCache && handleCache !== '') {
-        const cachedHandles = JSON.parse(handleCache) as string[];
-        window["cachedHandles"] = cachedHandles;
-      }
+      // if (handleCache && handleCache !== '') {
+      //   const cachedHandles = JSON.parse(handleCache) as string[];
+      //   window["cachedHandles"] = cachedHandles;
+      // }
 
       const script = document.createElement('script');
 
@@ -67,9 +67,9 @@ function App() {
                 window["setMainUser"](window["mainUser"]);
                 window["setJwt"](jwt);
 
-                if (window["cachedHandles"] !== undefined) {
-                  window["setHandles"](window["cachedHandles"]);
-                }
+                // if (window["cachedHandles"] !== undefined) {
+                //   window["setHandles"](window["cachedHandles"]);
+                // }
               }
             })
           })
@@ -194,8 +194,9 @@ function App() {
   const clearCacheButton =
       <div className="btn"
         onClick={clearCacheHandler}
-        style={{display: 'flex', alignItems: 'center', height: '60px', justifyContent: 'center', maxWidth: '300px'}}
-      >Refresh</div>
+        style={{display: 'flex', alignItems: 'center', height: '60px', justifyContent: 'center', maxWidth: '300px'}}>
+        Refresh Cache
+      </div>;
 
 
   return (
@@ -211,9 +212,9 @@ function App() {
           <p style={marginBottom}>
             Compare Steam libraries to help organise online multiplayer sessions with your friends.
           </p>
-          <p style={marginBottom}>
+          {/* <p style={marginBottom}>
             Ensure the accounts you want to compare have both a public profile and a public games list.
-          </p>
+          </p> */}
           <p style={marginBottom}>
             If you find the service useful, please consider supporting me on ko-fi.<br/><br/><br/><br/>
             <span style={alignCenter}>
@@ -227,7 +228,7 @@ function App() {
         <div className="body">
           <UserCheck waiting={waiting} waitingFunc={waitingHandler} userHandler={userHandler} mainUser={mainUser} />
           <UserList waitingFunc={waitingHandler} mainUser={mainUser} handles={handles} addUserHandler={addUserHandler} removeUserHandler={removeUserHandler} token={jwt} />
-          { mainUser === '' ? <></> : clearCacheButton }
+          { handles.length < 2 ? <></> : clearCacheButton }
         </div>
       </div>
       <div className="section">
