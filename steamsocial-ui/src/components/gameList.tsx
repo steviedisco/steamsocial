@@ -49,13 +49,14 @@ export default function GameList(props) {
   const [libraries, setLibraries] = useState({} as any);
   const [summaries, setSummaries] = useState({} as any);
   const [multiplayerFlag, setMultiplayerFlag] = useState(true);
+  const [scrolled, setScrolled] = useState(false);
 
   const listRef = useRef(null);
 
   const scrollToRef = (ref) => {
-    if (ref.current) {
-
-      ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (ref.current && !scrolled) {
+      setScrolled(true);
+      // ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }
 

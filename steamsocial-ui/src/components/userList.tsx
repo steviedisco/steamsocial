@@ -11,7 +11,7 @@ const block = {
 
 export default function UserList(props) {
 
-  let { mainUser, addUserHandler, removeUserHandler, token } = props;
+  let { mainUser, addUserHandler, handles, removeUserHandler, token, waitingFunc } = props;
 
   const [summaries, setSummaries] = useState({} as any);
 
@@ -25,17 +25,20 @@ export default function UserList(props) {
     client.fetchFriends(mainUser, token)
       .then(sums => {
         setSummaries(sums)
+        if (waitingFunc && waitingFunc !== null) {
+          waitingFunc(false);
+        }
       });
 
   // eslint-disable-next-line
   }, [mainUser, token]);
 
 
-  const toggleFriend = handle => event => {
-    if (event.target.value) {
-      addUserHandler(handle);
+  const toggleFriend = handle => {
+    if (!handles.includes(handle)) {
+      addUserHandler(handle, token);
     } else {
-      removeUserHandler(handle);
+      removeUserHandler(handle, token);
     }
   }
 
@@ -49,7 +52,7 @@ export default function UserList(props) {
       maxWidth: '300px', marginLeft: '5px', marginBottom: '20px'}}>
     {
       summaries.map(user => {
-        return (<div className="item" key={`user_${user.nickname}`}
+        return (<div className={handles.includes(user.steamID) ? 'item active' : 'item'} key={`user_${user.nickname}`}
           style={{
             marginBottom: '10px',
             display: 'flex',
@@ -85,4 +88,5 @@ UserList.propTypes = {
   addUserHandler: PropTypes.any.isRequired,
   removeUserHandler: PropTypes.any.isRequired,
   token: PropTypes.any.isRequired,
+  waitingFunc: PropTypes.any,
 };

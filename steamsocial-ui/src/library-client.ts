@@ -275,7 +275,20 @@ export const getSummaries = async (handles, token) => {
 };
 
 
-export const fetchSummary = (handle, token) => {
+export const fetchSummary = (steamid, token) => {
+  return new Promise((resolve) => {
+    (async () => {
+        await getProfile(steamid, token)
+          .then(summary => {
+              resolve(summary);
+          })
+          .catch(() => resolve(null));
+      })();
+    });
+};
+
+
+export const fetchSummaryByHandle = (handle, token) => {
   return new Promise((resolve) => {
     (async () => {
       await getUserId(handle, token)

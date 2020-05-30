@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 
 import * as client from './../library-client';
 
+import Spinner from 'reactjs-simple-spinner'
 
 export default function UserCheck(props) {
 
-  let { userHandler, mainUser } = props;
+  let { userHandler, mainUser, waitingFunc, waiting } = props;
 
   const prompt = 'Enter your Steam profile name';
   const [handle, setHandle] = useState('');
@@ -30,7 +31,6 @@ export default function UserCheck(props) {
   const checkUser = (handle, jwt) => {
     userHandler(handle, jwt);
     setJwt(jwt);
-    setHandle('');
   }
 
 
@@ -46,6 +46,8 @@ export default function UserCheck(props) {
       checkUser(handle, jwt);
       return;
     }
+
+    waitingFunc(true);
 
     const script = document.createElement('script');
 
@@ -77,11 +79,13 @@ export default function UserCheck(props) {
     }
   }
 
-
   return (
     <div style={{marginBottom: '20px'}}>
       <input placeholder={prompt} value={handle} onChange={handleChange} onKeyPress={handleKeypress} style={{marginLeft: '3px', paddingLeft: '20px', fontSize: '18px', height: '60px', maxWidth: '300px'}} />
-      <div className="btn" onClick={tryCheckUser} style={{display: 'flex', alignItems: 'center', height: '60px', justifyContent: 'center', maxWidth: '300px'}}>Get Friends</div>
+      <div className="btn" onClick={tryCheckUser} style={{display: 'flex', alignItems: 'center', height: '60px', justifyContent: 'center', maxWidth: '300px'}}>
+        <span style={{marginRight: '20px'}}>Get Friends</span>
+        { waiting ? <Spinner /> : <></> }
+      </div>
     </div>
   );
 }
@@ -91,4 +95,6 @@ export default function UserCheck(props) {
 UserCheck.propTypes = {
   userHandler: PropTypes.any.isRequired,
   mainUser: PropTypes.any.isRequired,
+  waiting: PropTypes.any.isRequired,
+  waitingFunc: PropTypes.any.isRequired,
 };

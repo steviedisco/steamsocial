@@ -36,6 +36,7 @@ function App() {
   const [lastAction, setLastAction] = useState('');
   const [alertContent, setAlertContent] = useState('');
   const [jwt, setJwt] = useState('');
+  const [waiting, setWaiting] = useState(false);
 
   useEffect(() => {
 
@@ -93,7 +94,12 @@ function App() {
   }
 
 
-  const userHandler = async (handle, token) => {
+  const waitingHandler = value => {
+    setWaiting(value);
+  };
+
+
+  const userHandler = async (handle, token, setWaiting) => {
 
     if (handle === '') {
       setAlertContent("Please enter a valid Steam user");
@@ -107,22 +113,21 @@ function App() {
     if (!handles.includes(handle)) {
 
       await (async () => {
-        const summary = await client.fetchSummary(handle, token);
+        const summary = await client.fetchSummaryByHandle(handle, token) as any;
 
         if (summary) {
           localStorage.setItem("mainUser", handle);
           setMainUser(handle);
-          const added = [].concat(handle);
+          const added = [].concat(summary.steamID);
+          localStorage.setItem("handles", JSON.stringify(added));
           setHandles(added);
           setLastAction('add');
         } else {
           setAlertContent("User not found - is your profile public?");
-          return;
         }
       })();
     } else {
       setAlertContent("User already added");
-      return;
     }
   };
 
@@ -220,8 +225,8 @@ function App() {
       </div>
       <div className="section">
         <div className="body">
-          <UserCheck userHandler={userHandler} mainUser={mainUser} />
-          <UserList mainUser={mainUser} handles={handles} addUserHandler={addUserHandler} removeUserHandler={removeUserHandler} token={jwt} />
+          <UserCheck waiting={waiting} waitingFunc={waitingHandler} userHandler={userHandler} mainUser={mainUser} />
+          <UserList waitingFunc={waitingHandler} mainUser={mainUser} handles={handles} addUserHandler={addUserHandler} removeUserHandler={removeUserHandler} token={jwt} />
           { mainUser === '' ? <></> : clearCacheButton }
         </div>
       </div>
