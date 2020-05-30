@@ -3,22 +3,10 @@ import PropTypes from 'prop-types';
 
 import * as client from './../library-client';
 
-const block = {
-  display: 'block',
-} as React.CSSProperties;
-
-const inline = {
-  display: 'inline',
-} as React.CSSProperties;
-
-const pointer = {
-  cursor: 'pointer'
-} as React.CSSProperties;
-
 
 export default function UserCheck(props) {
 
-  let { userHandler } = props;
+  let { userHandler, mainUser } = props;
 
   const prompt = 'Enter your Steam profile name';
   const [handle, setHandle] = useState('');
@@ -27,11 +15,15 @@ export default function UserCheck(props) {
 
   useEffect(() => {
 
+    if (mainUser !== '') {
+      setHandle(mainUser);
+    }
+
     window["verifyRecaptcha"] = client.verifyRecaptcha;
     window["checkUser"] = checkUser;
 
   // eslint-disable-next-line
-  }, []);
+  }, [mainUser]);
 
 
 
@@ -87,18 +79,9 @@ export default function UserCheck(props) {
 
 
   return (
-    <div style={block}>
-      <div style={inline}>
-        <input placeholder={prompt} value={handle} onChange={handleChange} onKeyPress={handleKeypress}
-          ref={(node) => {
-             if (node) {
-               node.style.setProperty("max-width", "300px", "important");
-             }
-           }} />
-         <div className="btn" onClick={tryCheckUser}>
-           <i className="material-icons" style={pointer}>group_add</i>
-         </div>
-      </div>
+    <div style={{marginBottom: '20px'}}>
+      <input placeholder={prompt} value={handle} onChange={handleChange} onKeyPress={handleKeypress} style={{marginLeft: '3px', paddingLeft: '20px', fontSize: '18px', height: '60px', maxWidth: '300px'}} />
+      <div className="btn" onClick={tryCheckUser} style={{display: 'flex', alignItems: 'center', height: '60px', justifyContent: 'center', maxWidth: '300px'}}>Go</div>
     </div>
   );
 }
@@ -107,4 +90,5 @@ export default function UserCheck(props) {
 
 UserCheck.propTypes = {
   userHandler: PropTypes.any.isRequired,
+  mainUser: PropTypes.any.isRequired,
 };

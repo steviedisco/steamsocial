@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 
 import * as client from './../library-client';
 
-
-
 const block = {
   display: 'block',
 } as React.CSSProperties;
@@ -13,14 +11,14 @@ const block = {
 
 export default function UserList(props) {
 
-  let { mainUser, handles, addUserHandler, removeUserHandler, token } = props;
+  let { mainUser, addUserHandler, removeUserHandler, token } = props;
 
   const [summaries, setSummaries] = useState({} as any);
 
 
   useEffect(() => {
 
-    if (!token || token === '') {
+    if (!token || token === '' || mainUser === '') {
       return;
     }
 
@@ -41,39 +39,36 @@ export default function UserList(props) {
     }
   }
 
-  if (!Object.keys(summaries)) {
+  if (!summaries || Object.keys(summaries).length === 0) {
     return null;
   }
 
   return (<div style={block}>
+    <div className={'list select multiple'} style={{backgroundColor: 'transparent'}}>
     {
+
       summaries.map(user => {
-        return (<div key={`user_${user.nickname}`}>
-            <div style={block}>
-              <input type="checkbox" onClick={() => toggleFriend(handle)} />
-              <input value={user.nickname} disabled={true}
-                ref={(node) => {
-                 if (node) {
-                   node.style.setProperty("max-width", "290px", "important");
-                 }
-               }} />
-               <img src={user.avatar.medium}
-                    alt=""
-                    title={user.nickname}
-                    width="30"
-                    height="30"
-                    ref={(node) => {
-                     if (node) {
-                       node.style.setProperty("position", "relative");
-                       node.style.setProperty("top", "10px");
-                       node.style.setProperty("margin-left", "10px");
-                     }
-                   }} />
-            </div>
-          </div>);
-        })}
-  </div>);
-}
+        return (<div className="item" key={`user_${user.nickname}`}
+          style={{
+            marginBottom: '10px',
+            backgroundColor: 'var(--inputColor)',
+            display: 'flex',
+            alignItems: 'center',
+            maxWidth: '300px'}}>
+          <img src={user.avatar.medium}
+               alt=""
+               title={user.nickname}
+               width="30"
+               height="30"
+               onClick={() => toggleFriend(user.steamID)}
+               style={{marginRight: '20px'}}/>
+               {user.nickname}
+            </div>)
+          })}
+          </div>
+        </div>)
+      }
+
 
 UserList.propTypes = {
   mainUser: PropTypes.any.isRequired,

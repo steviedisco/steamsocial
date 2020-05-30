@@ -43,14 +43,17 @@ function App() {
     const handleCache = localStorage.getItem("handles")
 
     if (mainUserCache && mainUserCache !== '') {
-      const cachedHandles = JSON.parse(handleCache) as string[];
 
       window["verifyRecaptcha"] = client.verifyRecaptcha;
       window["setJwt"] = setJwt;
       window["setMainUser"] = setMainUser;
       window["setHandles"] = setHandles;
       window["mainUser"] = mainUserCache;
-      window["cachedHandles"] = cachedHandles;
+
+      if (handleCache && handleCache !== '') {
+        const cachedHandles = JSON.parse(handleCache) as string[];
+        window["cachedHandles"] = cachedHandles;
+      }
 
       const script = document.createElement('script');
 
@@ -61,8 +64,11 @@ function App() {
             window["verifyRecaptcha"](token, (jwt) => {
               if (jwt && jwt !== '') {
                 window["setMainUser"](window["mainUser"]);
-                window["setHandles"](window["cachedHandles"]);
                 window["setJwt"](jwt);
+
+                if (window["cachedHandles"] !== undefined) {
+                  window["setHandles"](window["cachedHandles"]);
+                }
               }
             })
           })
@@ -79,6 +85,7 @@ function App() {
   const clearCacheHandler = () => {
     const theme = localStorage.getItem("fluidTheme") as string;
     localStorage.clear();
+    localStorage.setItem("mainUser", mainUser);
     localStorage.setItem("handles", JSON.stringify(handles));
     localStorage.setItem("fluidTheme", theme);
 
@@ -103,7 +110,7 @@ function App() {
         const summary = await client.fetchSummary(handle, token);
 
         if (summary) {
-          localStorage.setItem("mainUser", JSON.stringify(handle));
+          localStorage.setItem("mainUser", handle);
           setMainUser(handle);
           const added = [].concat(handle);
           setHandles(added);
@@ -182,11 +189,8 @@ function App() {
   const clearCacheButton =
       <div className="btn"
         onClick={clearCacheHandler}
-        ref={(node) => {
-        if (node) {
-          node.style.setProperty("max-width", "300px", "important");
-          node.style.setProperty("margin-bottom", "60px");
-        }}}>Refresh</div>
+        style={{display: 'flex', alignItems: 'center', height: '60px', justifyContent: 'center', maxWidth: '300px'}}
+      >Refresh</div>
 
 
   return (
@@ -203,6 +207,9 @@ function App() {
             Compare Steam libraries to help organise online multiplayer sessions with your friends.
           </p>
           <p style={marginBottom}>
+            Ensure the accounts you want to compare have both a public profile and a public games list.
+          </p>
+          <p style={marginBottom}>
             If you find the service useful, please consider supporting me on ko-fi.<br/><br/>
             <span style={alignCenter}>
               <a href='https://ko-fi.com/Q5Q61R4DM' target='_new'><img height='36' style={{border:'0px', height:'36px'}} src='https://cdn.ko-fi.com/cdn/kofi3.png?v=2'  alt='Buy Me a Coffee at ko-fi.com' /></a>
@@ -213,12 +220,9 @@ function App() {
       </div>
       <div className="section">
         <div className="body">
-          <p style={marginBottom}>
-            Ensure the accounts you are comparing have both a public profile and a public games list.
-          </p>
-          <UserCheck userHandler={userHandler} />
-          { handles.length < 2 ? <></> : clearCacheButton }
+          <UserCheck userHandler={userHandler} mainUser={mainUser} />
           <UserList mainUser={mainUser} handles={handles} addUserHandler={addUserHandler} removeUserHandler={removeUserHandler} token={jwt} />
+          { mainUser === '' ? <></> : clearCacheButton }
         </div>
       </div>
       <div className="section">
