@@ -44,23 +44,32 @@ export default function UserList(props) {
   }
 
   return (<div style={block}>
-    <div className={'list select multiple'} style={{backgroundColor: 'transparent'}}>
+    <p style={{fontSize:'18px', marginLeft: '10px', paddingTop: '20px'}}>Select friends to compare</p>
+    <div className="list select multiple" style={{
+      maxWidth: '300px', marginLeft: '5px', marginBottom: '20px'}}>
     {
-
       summaries.map(user => {
         return (<div className="item" key={`user_${user.nickname}`}
           style={{
             marginBottom: '10px',
-            backgroundColor: 'var(--inputColor)',
             display: 'flex',
             alignItems: 'center',
-            maxWidth: '300px'}}>
+            maxWidth: '300px'}}
+            onClick={event => {
+              if ($(event.target).parent().hasClass("multiple")) {
+                $(event.target).toggleClass("active")
+              } else {
+                $(event.target).siblings().removeClass("active")
+                $(event.target).addClass("active")
+              }
+              $(event.target).attr("init", "true");
+              toggleFriend(user.steamID)
+            }}>
           <img src={user.avatar.medium}
                alt=""
                title={user.nickname}
                width="30"
                height="30"
-               onClick={() => toggleFriend(user.steamID)}
                style={{marginRight: '20px'}}/>
                {user.nickname}
             </div>)

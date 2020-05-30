@@ -210,7 +210,7 @@ function App() {
             Ensure the accounts you want to compare have both a public profile and a public games list.
           </p>
           <p style={marginBottom}>
-            If you find the service useful, please consider supporting me on ko-fi.<br/><br/>
+            If you find the service useful, please consider supporting me on ko-fi.<br/><br/><br/><br/>
             <span style={alignCenter}>
               <a href='https://ko-fi.com/Q5Q61R4DM' target='_new'><img height='36' style={{border:'0px', height:'36px'}} src='https://cdn.ko-fi.com/cdn/kofi3.png?v=2'  alt='Buy Me a Coffee at ko-fi.com' /></a>
             </span>
