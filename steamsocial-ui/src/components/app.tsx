@@ -15,7 +15,8 @@ const marginBottom = {
 } as React.CSSProperties;
 
 const alignCenter = {
-  textAlign: 'center'
+  textAlign: 'center',
+  display: 'block'
 } as React.CSSProperties;
 
 const header = {
@@ -38,35 +39,37 @@ function App() {
 
   useEffect(() => {
 
-    const cacheValue = localStorage.getItem("handles")
+    const mainUserCache = localStorage.getItem("mainUser")
+    const handleCache = localStorage.getItem("handles")
 
-    if (cacheValue && cacheValue !== '') {
-      const cachedHandles = JSON.parse(cacheValue) as string[];
-      if (cachedHandles.length) {
+    if (mainUserCache && mainUserCache !== '') {
+      const cachedHandles = JSON.parse(handleCache) as string[];
 
-        window["verifyRecaptcha"] = client.verifyRecaptcha;
-        window["setJwt"] = setJwt;
-        window["setHandles"] = setHandles;
-        window["cachedHandles"] = cachedHandles;
+      window["verifyRecaptcha"] = client.verifyRecaptcha;
+      window["setJwt"] = setJwt;
+      window["setMainUser"] = setMainUser;
+      window["setHandles"] = setHandles;
+      window["mainUser"] = mainUserCache;
+      window["cachedHandles"] = cachedHandles;
 
-        const script = document.createElement('script');
+      const script = document.createElement('script');
 
-        script.type = "text/javascript"
-        script.innerHTML = `
-          grecaptcha.ready(function(){
-            grecaptcha.execute("6LfDq_MUAAAAAB_Kefr15OvioLopWcs2YELeXbP9", {action: 'homepage'}).then(function(token) {
-              window["verifyRecaptcha"](token, (jwt) => {
-                if (jwt && jwt !== '') {
-                  window["setHandles"](window["cachedHandles"]);
-                  window["setJwt"](jwt);
-                }
-              })
+      script.type = "text/javascript"
+      script.innerHTML = `
+        grecaptcha.ready(function(){
+          grecaptcha.execute("6LfDq_MUAAAAAB_Kefr15OvioLopWcs2YELeXbP9", {action: 'homepage'}).then(function(token) {
+            window["verifyRecaptcha"](token, (jwt) => {
+              if (jwt && jwt !== '') {
+                window["setMainUser"](window["mainUser"]);
+                window["setHandles"](window["cachedHandles"]);
+                window["setJwt"](jwt);
+              }
             })
-          });
-        `;
+          })
+        });
+      `;
 
-        document.body.appendChild(script);
-      }
+      document.body.appendChild(script);
     }
 
   }, []);
@@ -100,6 +103,7 @@ function App() {
         const summary = await client.fetchSummary(handle, token);
 
         if (summary) {
+          localStorage.setItem("mainUser", JSON.stringify(handle));
           setMainUser(handle);
           const added = [].concat(handle);
           setHandles(added);
@@ -200,9 +204,9 @@ function App() {
           </p>
           <p style={marginBottom}>
             If you find the service useful, please consider supporting me on ko-fi.<br/><br/>
-            <div style={alignCenter}>
+            <span style={alignCenter}>
               <a href='https://ko-fi.com/Q5Q61R4DM' target='_new'><img height='36' style={{border:'0px', height:'36px'}} src='https://cdn.ko-fi.com/cdn/kofi3.png?v=2'  alt='Buy Me a Coffee at ko-fi.com' /></a>
-            </div>
+            </span>
             <br/>
           </p>
         </div>

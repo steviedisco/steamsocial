@@ -17,6 +17,7 @@ export default function UserList(props) {
 
   const [summaries, setSummaries] = useState({} as any);
 
+
   useEffect(() => {
 
     if (!token || token === '') {
@@ -29,7 +30,8 @@ export default function UserList(props) {
       });
 
   // eslint-disable-next-line
-}, [mainUser, token]);
+  }, [mainUser, token]);
+
 
   const toggleFriend = handle => event => {
     if (event.target.value) {
@@ -45,38 +47,31 @@ export default function UserList(props) {
 
   return (<div style={block}>
     {
-      handles.map(handle => {
-        const user = summaries[handle];
-        if (user) {
-          return (<div key={`user_${user.nickname}`}>
-              <div style={block}>
-                <input type="checkbox" onClick={() => toggleFriend(handle)} />
-                <input value={user.nickname} disabled={true}
-                  ref={(node) => {
-                   if (node) {
-                     node.style.setProperty("max-width", "290px", "important");
-                   }
-                 }} />
-                 <img src={user.avatar.medium}
-                      alt=""
-                      title={user.nickname}
-                      width="30"
-                      height="30"
-                      ref={(node) => {
-                       if (node) {
-                         node.style.setProperty("position", "relative");
-                         node.style.setProperty("top", "10px");
-                         node.style.setProperty("margin-left", "10px");
-                       }
-                     }} />
-              </div>
+      summaries.map(user => {
+        return (<div key={`user_${user.nickname}`}>
+            <div style={block}>
+              <input type="checkbox" onClick={() => toggleFriend(handle)} />
+              <input value={user.nickname} disabled={true}
+                ref={(node) => {
+                 if (node) {
+                   node.style.setProperty("max-width", "290px", "important");
+                 }
+               }} />
+               <img src={user.avatar.medium}
+                    alt=""
+                    title={user.nickname}
+                    width="30"
+                    height="30"
+                    ref={(node) => {
+                     if (node) {
+                       node.style.setProperty("position", "relative");
+                       node.style.setProperty("top", "10px");
+                       node.style.setProperty("margin-left", "10px");
+                     }
+                   }} />
             </div>
-          );
-        }
-
-        return null;
-      })
-    }
+          </div>);
+        })}
   </div>);
 }
 

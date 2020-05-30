@@ -4,7 +4,7 @@ const verifyCaptchaUrl = 'https://54z0aarbpc.execute-api.eu-west-1.amazonaws.com
 const resolveUserUrl = 'https://9192zxrrp6.execute-api.eu-west-1.amazonaws.com/default/get_steamUserIdFromHandle_Function';
 const gamesListUrl = 'https://k14n0rcap5.execute-api.eu-west-1.amazonaws.com/default/get_userOwnedGames_Function';
 const userSummaryUrl = 'https://8ydkm187n9.execute-api.eu-west-1.amazonaws.com/default/get_userSummary_Function';
-const friendListUrl = ' https://nuxq04drl5.execute-api.eu-west-1.amazonaws.com/default/get_userFriendList_Function';
+const friendListUrl = 'https://nuxq04drl5.execute-api.eu-west-1.amazonaws.com/default/get_userFriendList_Function';
 
 export const process = (libraries, summaries) => {
 
@@ -197,7 +197,7 @@ export const getFriends = async (steamid, handle, token) => {
           .then(response => {
             resolve(response)
           })
-          .catch(() => {
+          .catch(err => {
             alert(`Friend list fetch failed for ${handle}.`);
             resolve(null);
           });
