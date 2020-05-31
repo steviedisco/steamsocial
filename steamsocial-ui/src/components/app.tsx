@@ -265,7 +265,7 @@ function App() {
         <div className="body">
           <UserCheck waiting={waiting} waitingFunc={waitingHandler} userHandler={userHandler} mainUser={mainUser} />
           <UserList passSummaries={passSummaries} waitingFunc={waitingHandler} mainUser={mainUser} handles={handles} addUserHandler={addUserHandler} removeUserHandler={removeUserHandler} token={jwt} />
-          { summaries.length < 2 ? <></> : clearCacheButton }
+          { summaries.length < 2 || handles.length < 2 ? <></> : clearCacheButton }
         </div>
       </div>
       <div className="section">

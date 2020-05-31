@@ -70,7 +70,10 @@ export default function UserList(props) {
   }
 
   return (<div style={block} ref={listRef}>
-    <p style={{fontSize:'18px', marginLeft: '10px', paddingTop: '20px'}}>Select friends to compare</p>
+    <p style={{fontSize:'18px', marginLeft: '10px', paddingTop: '20px'}}>
+      Select friends to compare.<br/><br/>
+      Scroll down for results.
+    </p>
     <div className="list select multiple" style={{
       maxWidth: '333px', marginLeft: '5px', marginBottom: '20px'}}>
     {
