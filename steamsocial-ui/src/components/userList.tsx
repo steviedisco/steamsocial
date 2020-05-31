@@ -11,7 +11,7 @@ const block = {
 
 export default function UserList(props) {
 
-  let { mainUser, addUserHandler, handles, removeUserHandler, token, waitingFunc } = props;
+  let { mainUser, addUserHandler, handles, removeUserHandler, token, waitingFunc, passSummaries } = props;
 
   const [summaries, setSummaries] = useState({} as any);
 
@@ -31,7 +31,7 @@ export default function UserList(props) {
 
 
   useEffect(() => {
-    if (summaries.length > 1) {
+    if (summaries && summaries.length > 1) {
       scrollToList();
     }
   // eslint-disable-next-line
@@ -46,7 +46,8 @@ export default function UserList(props) {
 
     client.fetchFriends(mainUser, token)
       .then(sums => {
-        setSummaries(sums)
+        setSummaries(sums);
+        passSummaries(sums);
         if (waitingFunc && waitingFunc !== null) {
           waitingFunc(false);
         }
@@ -71,15 +72,15 @@ export default function UserList(props) {
   return (<div style={block} ref={listRef}>
     <p style={{fontSize:'18px', marginLeft: '10px', paddingTop: '20px'}}>Select friends to compare</p>
     <div className="list select multiple" style={{
-      maxWidth: '300px', marginLeft: '5px', marginBottom: '20px'}}>
+      maxWidth: '333px', marginLeft: '5px', marginBottom: '20px'}}>
     {
-      summaries.map(user => {
-        return (<div className={handles.includes(user.steamID) ? 'item active' : 'item'} key={`user_${user.nickname}`}
+      summaries.map(user => { return user === undefined ? <></> :
+       (<div className={handles.includes(user.steamID) ? 'item active' : 'item'} key={`user_${user.nickname}`}
           style={{
             marginBottom: '10px',
             display: 'flex',
             alignItems: 'center',
-            maxWidth: '300px'}}
+            maxWidth: '333px'}}
             onClick={event => {
               if ($(event.target).parent().hasClass("multiple")) {
                 $(event.target).toggleClass("active")
@@ -111,4 +112,5 @@ UserList.propTypes = {
   removeUserHandler: PropTypes.any.isRequired,
   token: PropTypes.any.isRequired,
   waitingFunc: PropTypes.any,
+  passSummaries: PropTypes.any.isRequired,
 };

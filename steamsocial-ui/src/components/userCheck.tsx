@@ -81,8 +81,8 @@ export default function UserCheck(props) {
 
   return (
     <div style={{marginBottom: '20px'}}>
-      <input placeholder={prompt} value={handle} onChange={handleChange} onKeyPress={handleKeypress} style={{marginLeft: '3px', paddingLeft: '20px', fontSize: '18px', height: '60px', maxWidth: '300px'}} />
-      <div className="btn" onClick={tryCheckUser} style={{display: 'flex', alignItems: 'center', height: '60px', justifyContent: 'center', maxWidth: '300px'}}>
+      <input placeholder={prompt} value={handle} onChange={handleChange} onKeyPress={handleKeypress} style={{marginLeft: '3px', paddingLeft: '20px', fontSize: '18px', height: '60px', maxWidth: '333px'}} />
+      <div className="btn" onClick={tryCheckUser} style={{display: 'flex', alignItems: 'center', height: '60px', justifyContent: 'center', maxWidth: '333px'}}>
         <span style={{marginRight: '20px'}}>Get Friends</span>
         { waiting ? <Spinner /> : <></> }
       </div>

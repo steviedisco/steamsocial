@@ -37,6 +37,7 @@ function App() {
   const [alertContent, setAlertContent] = useState('');
   const [jwt, setJwt] = useState('');
   const [waiting, setWaiting] = useState(false);
+  const [summaries, setSummaries] = useState({} as any);
 
   useEffect(() => {
 
@@ -99,7 +100,7 @@ function App() {
   };
 
 
-  const userHandler = async (handle, token, setWaiting) => {
+  const userHandler = async (handle, token) => {
 
     if (handle === '') {
       setAlertContent("Please enter a valid Steam user");
@@ -122,6 +123,7 @@ function App() {
           localStorage.setItem("handles", JSON.stringify(added));
           setHandles(added);
           setLastAction('add');
+          return summary;
         } else {
           setAlertContent("User not found - is your profile public?");
         }
@@ -129,6 +131,42 @@ function App() {
     } else {
       setAlertContent("User already added");
     }
+  };
+
+
+
+  const reloadHandler = async (id, token) => {
+
+    if (id === '') {
+      setAlertContent("Please enter a valid Steam user");
+      return;
+    }
+
+    if (token !== '') {
+      setJwt(token);
+    }
+
+    let summary = {} as any;
+
+    if (!handles.includes(id)) {
+
+      await (async () => {
+        summary = await client.fetchSummary(id, token) as any;
+
+        if (summary) {
+          const added = [].concat(summary.steamID);
+          localStorage.setItem("handles", JSON.stringify(added));
+          setHandles(added);
+          setLastAction('add');
+        } else {
+          setAlertContent("User not found - is your profile public?");
+        }
+      })();
+    } else {
+      setAlertContent("User already added");
+    }
+
+    return summary;
   };
 
 
@@ -144,23 +182,10 @@ function App() {
     }
 
     if (!handles.includes(handle)) {
-
-      await (async () => {
-        const summary = await client.fetchSummary(handle, token);
-
-        if (summary) {
-          const added = handles.concat(handle);
-          localStorage.setItem("handles", JSON.stringify(added));
-          setHandles(added);
-          setLastAction('add');
-          if (added.length === 1) {
-            setMainUser(handle);
-          }
-        } else {
-          setAlertContent("User not found - is the user's profile public?");
-          return;
-        }
-      })();
+      const added = handles.concat(handle);
+      localStorage.setItem("handles", JSON.stringify(added));
+      setHandles(added);
+      setLastAction('add');
     } else {
       setAlertContent("User already added");
       return;
@@ -186,6 +211,18 @@ function App() {
     }
   };
 
+
+  const passSummaries = async (sums) => {
+    const mainID = localStorage.getItem(`${mainUser}_steamid`);
+
+    reloadHandler(mainID, jwt)
+      .then(sum => {
+        sums.splice(0, 0, sum);
+        setSummaries(sums);
+      });
+  };
+
+
   const closeAlert = () => {
     setAlertContent('');
   }
@@ -194,7 +231,7 @@ function App() {
   const clearCacheButton =
       <div className="btn"
         onClick={clearCacheHandler}
-        style={{display: 'flex', alignItems: 'center', height: '60px', justifyContent: 'center', maxWidth: '300px'}}>
+        style={{display: 'flex', alignItems: 'center', height: '60px', justifyContent: 'center', maxWidth: '333px'}}>
         Refresh Cache
       </div>;
 
@@ -227,13 +264,13 @@ function App() {
       <div className="section">
         <div className="body">
           <UserCheck waiting={waiting} waitingFunc={waitingHandler} userHandler={userHandler} mainUser={mainUser} />
-          <UserList waitingFunc={waitingHandler} mainUser={mainUser} handles={handles} addUserHandler={addUserHandler} removeUserHandler={removeUserHandler} token={jwt} />
-          { handles.length < 2 ? <></> : clearCacheButton }
+          <UserList passSummaries={passSummaries} waitingFunc={waitingHandler} mainUser={mainUser} handles={handles} addUserHandler={addUserHandler} removeUserHandler={removeUserHandler} token={jwt} />
+          { summaries.length < 2 ? <></> : clearCacheButton }
         </div>
       </div>
       <div className="section">
         <div className="body">
-          <GameList handles={handles} scroll={lastAction === 'add'} token={jwt} />
+          <GameList handles={handles} scroll={lastAction === 'add'} token={jwt} summaries={summaries} />
         </div>
       </div>
       <div className="section">
@@ -244,7 +281,7 @@ function App() {
           </div>
           <div style={alignCenter}>
             <br/><br/>
-            <a href='/privacypolicy.html' target='_new'>Privacy policy</a>
+            <a href='/privacypolicy.html' target='_new'>Privacy policy</a><br/><br/>
           </div>
         </div>
       </div>

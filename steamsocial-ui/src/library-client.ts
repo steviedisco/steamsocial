@@ -72,7 +72,9 @@ export const process = (libraries, summaries) => {
           current[0]["owned"] = 1;
           current[0]["users"] = [];
         }
-        current[0]["users"].push(summaries[key]);
+
+        let user = summaries.find(obj => obj.steamID === key);
+        current[0]["users"].push(user);
       }
     });
   });
@@ -102,7 +104,7 @@ export const process = (libraries, summaries) => {
 }
 
 
-const getUserId = async (handle, token) => {
+export const getUserId = async (handle, token) => {
 
   const key = `${handle}_steamid`;
 
@@ -119,13 +121,13 @@ const getUserId = async (handle, token) => {
 
   const steamid = await response.json();
 
-  localStorage.setItem(key, JSON.stringify(steamid));
+  localStorage.setItem(key, steamid);
 
   return steamid;
 }
 
 
-const getGames = async (steamid, handle, token) => {
+const getGames = async (steamid, token) => {
 
   const key = `${steamid}_games`;
 
@@ -154,7 +156,7 @@ const getGames = async (steamid, handle, token) => {
           })
           .catch(err => {
             console.log(err);
-            alert(`Game list fetch failed for ${handle}. Are the games listed as public?`);
+            alert(`Game list fetch failed for ${steamid}. Are the games listed as public?`);
             resolve(null);
           });
         })();
@@ -218,16 +220,13 @@ export const getFriends = async (steamid, handle, token) => {
 
 const fetchLibraries = async (handles, token) => {
 
-  const fetchLibrary = (handle, token) => {
+  const fetchLibrary = (steamid, token) => {
     return new Promise((resolve) => {
       (async () => {
-        await getUserId(handle, token)
-          .then(async steamid => {
-            await getGames(steamid, handle, token)
-              .then(games => {
-                  resolve(games);
-              })
-          });
+        await getGames(steamid, token)
+          .then(games => {
+              resolve(games);
+          })
         })();
       });
   };
@@ -267,11 +266,6 @@ const fetchLibraries = async (handles, token) => {
 
 export const getLibraries = async (handles, token) => {
   return await fetchLibraries(handles, token);
-};
-
-
-export const getSummaries = async (handles, token) => {
-  return await fetchSummaries(handles, token);
 };
 
 
@@ -319,41 +313,6 @@ export const fetchFriends = (handle, token) => {
         .catch(() => resolve(null));
       })();
     });
-};
-
-
-const fetchSummaries = async (handles, token) => {
-
-  const fetchAll = (token) => {
-
-    return new Promise((resolve) => {
-
-      (async () => {
-        let sums = {};
-        let resolvedCount = 0;
-
-        for (let i = 0; i < handles.length; i++) {
-
-          const handle = handles[i];
-
-          await (async () => {
-            const summary = await fetchSummary(handle, token);
-
-            if (summary) {
-              sums[handle] = summary;
-            }
-          })();
-
-          resolvedCount++;
-          if (resolvedCount === handles.length) {
-            resolve(sums);
-          }
-      }})();
-    });
-  };
-
-  const summaries = await fetchAll(token);
-  return summaries;
 };
 
 
