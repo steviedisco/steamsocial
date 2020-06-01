@@ -43,7 +43,7 @@ function PopulateList(props): any {
 
 export default function GameList(props) {
 
-  let { handles, scroll, token, summaries, userWaitingFunc } = props;
+  let { handles, scroll, token, summaries, userWaitingFunc, userWaitingIndex } = props;
 
   const [games, setGames] = useState({} as any);
   const [libraries, setLibraries] = useState({} as any);
@@ -85,25 +85,35 @@ export default function GameList(props) {
       return;
     }
 
+    if (handles.length < 2) {
+      userWaitingFunc(userWaitingIndex);
+      return;
+    }
+
     client.getLibraries(handles, token)
       .then(libs => {
 
         setLibraries(libs)
 
         if (!(handles.length === Object.keys(libs as {}).length) || Object.keys(libs as {}).length < 2) {
-          userWaitingFunc(false, '');
           return;
         }
 
         const games = client.process(libs, summaries);
 
         setGames(games);
-
-        userWaitingFunc(false, '');
       });
 
   // eslint-disable-next-line
   }, [handles, token]);
+
+
+  useEffect(() => {
+    if (userWaitingFunc && userWaitingFunc !== null) {
+      userWaitingFunc(userWaitingIndex);
+    }
+  // eslint-disable-next-line
+  }, [games]);
 
 
   useEffect(() => {
@@ -148,5 +158,6 @@ GameList.propTypes = {
   scroll: PropTypes.any.isRequired,
   token: PropTypes.any.isRequired,
   summaries: PropTypes.any.isRequired,
-  userWaitingFunc: PropTypes.any
+  userWaitingFunc: PropTypes.any,
+  userWaitingIndex: PropTypes.any
 };

@@ -9,13 +9,16 @@ const block = {
   display: 'block',
 } as React.CSSProperties;
 
-
+const hidden = {
+  display: 'none'
+} as React.CSSProperties;
 
 export default function UserList(props) {
 
-  let { mainUser, addUserHandler, handles, removeUserHandler, token, waitingFunc, passSummaries, waiting, waitingHandle, userWaitingFunc } = props;
+  let { mainUser, addUserHandler, handles, removeUserHandler, token, waitingFunc, passSummaries, userWaitingFunc, userWaitingIndex } = props;
 
   const [summaries, setSummaries] = useState({} as any);
+  const [spinnerHide, setSpinnerHide] = useState([] as any);
 
   const listRef = useRef(null);
 
@@ -50,6 +53,8 @@ export default function UserList(props) {
       .then(sums => {
         setSummaries(sums);
         passSummaries(sums);
+        const hideSpinners = new Array(Object.keys(sums as any).length + 1).fill(true);
+        setSpinnerHide(hideSpinners);
         if (waitingFunc && waitingFunc !== null) {
           waitingFunc(false);
         }
@@ -59,9 +64,19 @@ export default function UserList(props) {
   }, [mainUser, token]);
 
 
-  const toggleFriend = handle => {
+  useEffect(() => {
+    const temp = spinnerHide.splice(0);
+    temp[userWaitingIndex] = true;
+    setSpinnerHide(temp);
+    // eslint-disable-next-line
+  }, [userWaitingIndex]);
 
-    userWaitingFunc(true, handle);
+
+  const toggleFriend = (handle, index) => {
+
+    spinnerHide[index] = false;
+
+    userWaitingFunc(index);
 
     if (!handles.includes(handle)) {
       addUserHandler(handle, token);
@@ -74,6 +89,7 @@ export default function UserList(props) {
     return null;
   }
 
+
   let initAttr = {'init': 'true'};
 
   return (<div style={block} ref={listRef}>
@@ -84,7 +100,7 @@ export default function UserList(props) {
     <div className="list select multiple" style={{
       maxWidth: '333px', marginLeft: '5px', marginBottom: '20px'}}>
     {
-      summaries.map(user => { return user === undefined ? <></> :
+      summaries.map((user, index) => { return user === undefined ? <></> :
        (<div {...initAttr} className={handles.includes(user.steamID) ? 'item active' : 'item'} key={`user_${user.nickname}`}
           style={{
             marginBottom: '10px',
@@ -100,16 +116,16 @@ export default function UserList(props) {
                 $(event.target).addClass("active")
               }
               $(event.target).attr("init", "true");
-              toggleFriend(user.steamID)
+              toggleFriend(user.steamID, index)
             }}>
             <img src={user.avatar.medium}
                alt=""
                title={user.nickname}
                width="30"
                height="30"
-               style={{marginRight: '20px'}}/>
+               style={{marginRight: '20px'}} />
                <span style={{marginRight: '20px'}}>{user.nickname}</span>
-               { waiting && waitingHandle === user.steamID ? <Spinner /> : <></> }
+               <span style={spinnerHide[index] ? hidden : {}}><Spinner /></span>
             </div>)
           })}
           </div>
@@ -125,7 +141,6 @@ UserList.propTypes = {
   token: PropTypes.any.isRequired,
   waitingFunc: PropTypes.any,
   userWaitingFunc: PropTypes.any,
+  userWaitingIndex: PropTypes.any,
   passSummaries: PropTypes.any.isRequired,
-  waiting: PropTypes.any,
-  waitingHandle: PropTypes.any,
 };

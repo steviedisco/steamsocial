@@ -37,8 +37,7 @@ function App() {
   const [alertContent, setAlertContent] = useState('');
   const [jwt, setJwt] = useState('');
   const [waiting, setWaiting] = useState(false);
-  const [userWaiting, setUserWaiting] = useState(false);
-  const [userWaitingHandle, setUserWaitingHandle] = useState('');
+  const [userWaitingIndex, setUserWaitingIndex] = useState(0);
   const [summaries, setSummaries] = useState({} as any);
 
   useEffect(() => {
@@ -110,9 +109,8 @@ function App() {
   };
 
 
-  const userWaitingHandler = (value, handle) => {
-    setUserWaiting(value);
-    setUserWaitingHandle(handle);
+  const userWaitingHandler = (index) => {
+    setUserWaitingIndex(index);
   };
 
 
@@ -280,13 +278,13 @@ function App() {
       <div className="section">
         <div className="body">
           <UserCheck waiting={waiting} waitingFunc={waitingHandler} userHandler={userHandler} mainUser={mainUser} />
-          <UserList passSummaries={passSummaries} waiting={userWaiting} waitingHandle={userWaitingHandle} waitingFunc={waitingHandler} userWaitingFunc={userWaitingHandler} mainUser={mainUser} handles={handles} addUserHandler={addUserHandler} removeUserHandler={removeUserHandler} token={jwt} />
+          <UserList passSummaries={passSummaries} waitingFunc={waitingHandler} userWaitingFunc={userWaitingHandler} userWaitingIndex={userWaitingIndex} mainUser={mainUser} handles={handles} addUserHandler={addUserHandler} removeUserHandler={removeUserHandler} token={jwt} />
           { summaries.length < 2 || handles.length < 2 ? <></> : clearCacheButton }
         </div>
       </div>
       <div className="section">
         <div className="body">
-          <GameList handles={handles} scroll={lastAction === 'add'} token={jwt} summaries={summaries} userWaitingFunc={userWaitingHandler} />
+          <GameList handles={handles} scroll={lastAction === 'add'} token={jwt} summaries={summaries} userWaitingFunc={userWaitingHandler} userWaitingIndex={userWaitingIndex} />
         </div>
       </div>
       <div className="section">

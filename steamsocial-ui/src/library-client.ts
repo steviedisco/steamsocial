@@ -73,8 +73,10 @@ export const process = (libraries, summaries) => {
           current[0]["users"] = [];
         }
 
-        let user = summaries.find(obj => obj.steamID === key);
-        current[0]["users"].push(user);
+        if (summaries && summaries.length > 0) {
+          let user = summaries.find(obj => obj.steamID === key);
+          current[0]["users"].push(user);
+        }
       }
     });
   });
