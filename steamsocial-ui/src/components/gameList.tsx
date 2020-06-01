@@ -43,7 +43,7 @@ function PopulateList(props): any {
 
 export default function GameList(props) {
 
-  let { handles, scroll, token, summaries } = props;
+  let { handles, scroll, token, summaries, userWaitingFunc } = props;
 
   const [games, setGames] = useState({} as any);
   const [libraries, setLibraries] = useState({} as any);
@@ -97,6 +97,8 @@ export default function GameList(props) {
         const games = client.process(libs, summaries);
 
         setGames(games);
+
+        userWaitingFunc(false, '');
       });
 
   // eslint-disable-next-line
@@ -144,5 +146,6 @@ GameList.propTypes = {
   handles: PropTypes.any.isRequired,
   scroll: PropTypes.any.isRequired,
   token: PropTypes.any.isRequired,
-  summaries: PropTypes.any.isRequired
+  summaries: PropTypes.any.isRequired,
+  userWaitingFunc: PropTypes.any
 };

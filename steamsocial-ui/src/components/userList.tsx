@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import * as client from './../library-client';
 
+import Spinner from 'reactjs-simple-spinner'
+
 const block = {
   display: 'block',
 } as React.CSSProperties;
@@ -11,7 +13,7 @@ const block = {
 
 export default function UserList(props) {
 
-  let { mainUser, addUserHandler, handles, removeUserHandler, token, waitingFunc, passSummaries } = props;
+  let { mainUser, addUserHandler, handles, removeUserHandler, token, waitingFunc, passSummaries, waiting, waitingHandle, userWaitingFunc } = props;
 
   const [summaries, setSummaries] = useState({} as any);
 
@@ -58,6 +60,9 @@ export default function UserList(props) {
 
 
   const toggleFriend = handle => {
+
+    userWaitingFunc(true, handle);
+
     if (!handles.includes(handle)) {
       addUserHandler(handle, token);
     } else {
@@ -69,6 +74,8 @@ export default function UserList(props) {
     return null;
   }
 
+  let initAttr = {'init': 'true'};
+
   return (<div style={block} ref={listRef}>
     <p style={{fontSize:'18px', marginLeft: '10px', paddingTop: '20px'}}>
       Select friends to compare.<br/><br/>
@@ -78,12 +85,13 @@ export default function UserList(props) {
       maxWidth: '333px', marginLeft: '5px', marginBottom: '20px'}}>
     {
       summaries.map(user => { return user === undefined ? <></> :
-       (<div className={handles.includes(user.steamID) ? 'item active' : 'item'} key={`user_${user.nickname}`}
+       (<div {...initAttr} className={handles.includes(user.steamID) ? 'item active' : 'item'} key={`user_${user.nickname}`}
           style={{
             marginBottom: '10px',
             display: 'flex',
             alignItems: 'center',
             maxWidth: '333px'}}
+
             onClick={event => {
               if ($(event.target).parent().hasClass("multiple")) {
                 $(event.target).toggleClass("active")
@@ -94,13 +102,14 @@ export default function UserList(props) {
               $(event.target).attr("init", "true");
               toggleFriend(user.steamID)
             }}>
-          <img src={user.avatar.medium}
+            <img src={user.avatar.medium}
                alt=""
                title={user.nickname}
                width="30"
                height="30"
                style={{marginRight: '20px'}}/>
-               {user.nickname}
+               <span style={{marginRight: '20px'}}>{user.nickname}</span>
+               { waiting && waitingHandle === user.steamID ? <Spinner /> : <></> }
             </div>)
           })}
           </div>
@@ -115,5 +124,8 @@ UserList.propTypes = {
   removeUserHandler: PropTypes.any.isRequired,
   token: PropTypes.any.isRequired,
   waitingFunc: PropTypes.any,
+  userWaitingFunc: PropTypes.any,
   passSummaries: PropTypes.any.isRequired,
+  waiting: PropTypes.any,
+  waitingHandle: PropTypes.any,
 };

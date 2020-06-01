@@ -37,6 +37,8 @@ function App() {
   const [alertContent, setAlertContent] = useState('');
   const [jwt, setJwt] = useState('');
   const [waiting, setWaiting] = useState(false);
+  const [userWaiting, setUserWaiting] = useState(false);
+  const [userWaitingHandle, setUserWaitingHandle] = useState('');
   const [summaries, setSummaries] = useState({} as any);
 
   useEffect(() => {
@@ -85,11 +87,19 @@ function App() {
 
 
   const clearCacheHandler = () => {
+    const idKey = `${mainUser}_steamid`;
+    const id = localStorage.getItem(idKey) as string;
+
+    const friendKey = `${id}_friends`;
+    const friends = localStorage.getItem(friendKey) as string;
+
     const theme = localStorage.getItem("fluidTheme") as string;
     localStorage.clear();
     localStorage.setItem("mainUser", mainUser);
     localStorage.setItem("handles", JSON.stringify(handles));
     localStorage.setItem("fluidTheme", theme);
+    localStorage.setItem(idKey, id);
+    localStorage.setItem(friendKey, friends);
 
     window.location.reload(false);
   }
@@ -97,6 +107,12 @@ function App() {
 
   const waitingHandler = value => {
     setWaiting(value);
+  };
+
+
+  const userWaitingHandler = (value, handle) => {
+    setUserWaiting(value);
+    setUserWaitingHandle(handle);
   };
 
 
@@ -264,13 +280,13 @@ function App() {
       <div className="section">
         <div className="body">
           <UserCheck waiting={waiting} waitingFunc={waitingHandler} userHandler={userHandler} mainUser={mainUser} />
-          <UserList passSummaries={passSummaries} waitingFunc={waitingHandler} mainUser={mainUser} handles={handles} addUserHandler={addUserHandler} removeUserHandler={removeUserHandler} token={jwt} />
+          <UserList passSummaries={passSummaries} waiting={userWaiting} waitingHandle={userWaitingHandle} waitingFunc={waitingHandler} userWaitingFunc={userWaitingHandler} mainUser={mainUser} handles={handles} addUserHandler={addUserHandler} removeUserHandler={removeUserHandler} token={jwt} />
           { summaries.length < 2 || handles.length < 2 ? <></> : clearCacheButton }
         </div>
       </div>
       <div className="section">
         <div className="body">
-          <GameList handles={handles} scroll={lastAction === 'add'} token={jwt} summaries={summaries} />
+          <GameList handles={handles} scroll={lastAction === 'add'} token={jwt} summaries={summaries} userWaitingFunc={userWaitingHandler} />
         </div>
       </div>
       <div className="section">
