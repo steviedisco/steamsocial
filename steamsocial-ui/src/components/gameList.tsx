@@ -91,6 +91,7 @@ export default function GameList(props) {
         setLibraries(libs)
 
         if (!(handles.length === Object.keys(libs as {}).length) || Object.keys(libs as {}).length < 2) {
+          userWaitingFunc(false, '');
           return;
         }
 
