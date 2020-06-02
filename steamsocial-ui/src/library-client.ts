@@ -301,21 +301,21 @@ export const fetchSummaryByHandle = (handle, token) => {
 };
 
 
-export const fetchFriends = (handle, token) => {
-  return new Promise((resolve) => {
-    (async () => {
-      await getUserId(handle, token)
-        .then(async steamid => {
-          await getFriends(steamid, handle, token)
-            .then(summaries => {
-                resolve(summaries);
-            })
-            .catch(() => resolve(null));
-        })
-        .catch(() => resolve(null));
-      })();
-    });
-};
+// export const fetchFriends = (handle, token) => {
+//   return new Promise((resolve) => {
+//     (async () => {
+//       await getUserId(handle, token)
+//         .then(async steamid => {
+//           await getFriends(steamid, handle, token)
+//             .then(summaries => {
+//                 resolve(summaries);
+//             })
+//             .catch(() => resolve(null));
+//         })
+//         .catch(() => resolve(null));
+//       })();
+//     });
+// };
 
 
 const getProfile = async (steamid, token) => {

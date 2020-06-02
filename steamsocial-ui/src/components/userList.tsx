@@ -49,7 +49,10 @@ export default function UserList(props) {
       return;
     }
 
-    client.fetchFriends(mainUser, token)
+    const idKey = `${mainUser}_steamid`;
+    const id = localStorage.getItem(idKey) as string;
+
+    client.getFriends(id, mainUser, token)
       .then(sums => {
         setSummaries(sums);
         passSummaries(sums);
