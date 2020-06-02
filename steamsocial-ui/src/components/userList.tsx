@@ -65,9 +65,11 @@ export default function UserList(props) {
 
 
   useEffect(() => {
-    const temp = spinnerHide.splice(0);
-    temp[userWaitingIndex] = true;
-    setSpinnerHide(temp);
+    if (userWaitingIndex < 0) {
+      const temp = spinnerHide.splice(0);
+      temp.fill(true);
+      setSpinnerHide(temp);
+    }
     // eslint-disable-next-line
   }, [userWaitingIndex]);
 

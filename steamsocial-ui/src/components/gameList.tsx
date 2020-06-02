@@ -110,7 +110,7 @@ export default function GameList(props) {
 
   useEffect(() => {
     if (userWaitingFunc && userWaitingFunc !== null) {
-      userWaitingFunc(userWaitingIndex);
+      userWaitingFunc(-1);
     }
   // eslint-disable-next-line
   }, [games]);

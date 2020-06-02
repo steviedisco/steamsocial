@@ -37,7 +37,7 @@ function App() {
   const [alertContent, setAlertContent] = useState('');
   const [jwt, setJwt] = useState('');
   const [waiting, setWaiting] = useState(false);
-  const [userWaitingIndex, setUserWaitingIndex] = useState(0);
+  const [userWaitingIndex, setUserWaitingIndex] = useState(-1);
   const [summaries, setSummaries] = useState({} as any);
 
   useEffect(() => {
